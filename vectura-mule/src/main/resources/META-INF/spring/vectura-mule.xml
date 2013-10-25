@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:broker="http://activemq.apache.org/schema/core"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true"/>
+		<property name="locations">
+			<util:list>
+				<!--value>classpath:vectura-demo.properties</value>
+				<value>classpath:vectura-local.properties</value-->
+				<value>classpath:vectura-dev.properties</value>
+			</util:list>
+		</property>
+	</bean>
+
+	<import resource="classpath:/META-INF/spring/vectura-mule-mongodb.xml" />
+	<import resource="classpath:/META-INF/spring/vectura-mule-services.xml" />
+	<!--import resource="classpath:/META-INF/spring/vectura-mule-security.xml" /-->
+	
+	<!-- ========================= Persistence ========================= -->
+	
+</beans>

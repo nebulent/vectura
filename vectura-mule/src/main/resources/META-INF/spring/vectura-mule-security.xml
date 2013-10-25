@@ -1,0 +1,30 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:sec="http://www.springframework.org/schema/security"
+  	   	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	   	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          			       http://www.springframework.org/schema/beans/spring-beans.xsd
+          				   http://www.springframework.org/schema/security/ws/SalidoRestService/security
+                           http://www.springframework.org/schema/security/spring-security.xsd">
+    
+    <!-- =================== Security ========================== -->
+    
+    <!--
+    <sec:http pattern="/api/ping" security="none" />
+	<sec:http pattern="/api/**" create-session="stateless">
+	    <sec:intercept-url pattern="/**" access="ROLE_OFFICE, ROLE_CLIENT" />
+	    <sec:http-basic/>
+	    <sec:custom-filter position="PRE_AUTH_FILTER" ref="signedAuthFilter" />
+	</sec:http>
+	-->
+	
+    <sec:authentication-manager alias="authenticationManager">
+    	<sec:authentication-provider ref="signedRequestAuthenticationProvider"/>
+    </sec:authentication-manager>
+    
+  	<bean id="signedRequestAuthenticationProvider" class="com.nebulent.vectura.web.security.SignedRequestAuthenticationProvider" autowire="byName"/>
+  	
+  	<bean id="signedAuthFilter" class="com.salido.cloud.web.security.SignedRequestProcessingFilter">
+  		<property name="authenticationManager" ref="authenticationManager"/>
+  	</bean>
+  	
+</beans>

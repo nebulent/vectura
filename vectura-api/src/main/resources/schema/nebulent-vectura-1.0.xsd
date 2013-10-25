@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gpx="http://www.topografix.com/GPX/1/1" xmlns="urn:nebulent:schema:software:vectura:1.0" targetNamespace="urn:nebulent:schema:software:vectura:1.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xs:import namespace="http://www.topografix.com/GPX/1/1" schemaLocation="gpx-1.1.xsd"/>
+	
+	<xs:element name="account" type="AccountType" />
+	<xs:element name="vehicle" type="VehicleType" />
+	<xs:element name="patient" type="PatientType" />
+	<xs:element name="run" type="RunType" />
+	<xs:element name="ride" type="RideType" />
+	<xs:element name="user" type="UserType" />
+	<xs:element name="location" type="LocationType" />
+	<xs:element name="phoneInfo" type="PhoneInfoType" />
+	<xs:element name="addressInfo" type="AddressInfoType" />
+	<xs:element name="contactInfo" type="ContactType" />
+	
+	<xs:complexType name="AuditType">
+		<xs:sequence>
+			<xs:element name="addedOn" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="addedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="changedOn" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="changedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="status" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="version" type="xs:string" use="required" fixed="1.0">
+	     	<xs:annotation>
+	      		<xs:documentation>
+					You must include the version number in your document.
+		  		</xs:documentation>
+		 	</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	
+	<!-- 
+======================================================================= 
+Enumerations 
+======================================================================= 
+	-->
+	<xs:simpleType name="VehicleTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration id="CAR" value="CAR"/>
+			<xs:enumeration id="VAN" value="VAN"/>
+			<xs:enumeration id="PAR" value="PAR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AddressTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration id="MAIL" value="MAILING"/>
+			<xs:enumeration id="BILL" value="BILLING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ContactTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration id="PRI" value="PRIMARY"/>
+			<xs:enumeration id="SEC" value="SECONDARY"/>
+			<xs:enumeration id="BIL" value="BILLING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PhoneTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration id="B" value="BUSINESS"/>
+			<xs:enumeration id="W" value="WORK"/>
+			<xs:enumeration id="H" value="HOME"/>
+			<xs:enumeration id="C" value="CELL"/>
+			<xs:enumeration id="F" value="FAX"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RunTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration id="PU" value="PICKUP"/>
+			<xs:enumeration id="DO" value="DROPOFF"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- 
+======================================================================= 
+Enumerations 
+======================================================================= 
+	-->
+	
+	<xs:complexType name="AddressInfoType">
+		<xs:sequence>
+			<xs:element name="type" type="xs:string" minOccurs="0"/>
+			<xs:element name="digest" type="xs:base64Binary" minOccurs="1"/>
+			<xs:element name="addressLine1" type="xs:string" minOccurs="1"/>
+			<xs:element name="addressLine2" type="xs:string" minOccurs="0"/>
+			<xs:element name="addressLine3" type="xs:string" minOccurs="0"/>
+			<xs:element name="city" type="xs:string" minOccurs="1"/>
+			<xs:element name="stateOrProvince" type="xs:string" minOccurs="1"/>
+			<xs:element name="zipCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="countryCode" type="xs:string" minOccurs="0" default="US"/>
+		</xs:sequence>
+		<xs:attribute name="lat" type="gpx:latitudeType" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					The latitude of the point. Decimal degrees, WGS84 datum.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lon" type="gpx:longitudeType" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					The latitude of the point. Decimal degrees, WGS84 datum.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	
+	<xs:complexType name="NameValueType">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="value" type="xs:string" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="PhoneInfoType">
+		<xs:attribute name="type" type="xs:string" use="required"/>
+		<xs:attribute name="value" type="xs:string" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="VehicleType">
+		<xs:complexContent>
+			<xs:extension base="AuditType">
+				<xs:sequence>
+					<xs:element name="type" type="xs:string" minOccurs="1"/>
+					<xs:element name="seats" type="xs:int" minOccurs="1"/>
+					<xs:element name="year" type="xs:int" minOccurs="1"/>
+					<xs:element name="make" type="xs:string" minOccurs="1"/>
+					<xs:element name="model" type="xs:string" minOccurs="1"/>
+					<xs:element name="color" type="xs:string" minOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="vin" type="xs:string" use="optional"/>
+				<xs:attribute name="accountId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="ContactType">
+		<xs:complexContent>
+			<xs:extension base="AuditType">
+				<xs:sequence>
+					<xs:element name="type" type="xs:string" minOccurs="1"/>
+					<xs:element name="firstName" type="xs:string" minOccurs="1"/>
+					<xs:element name="lastName" type="xs:string" minOccurs="0"/>
+					<xs:element name="email" type="xs:string" minOccurs="1"/>
+					
+					<xs:element name="addresses" type="AddressInfoType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="phones" type="PhoneInfoType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="UserType">
+		<xs:complexContent>
+			<xs:extension base="ContactType">
+				<xs:sequence>
+					<xs:element name="passwordHash" type="xs:base64Binary" minOccurs="1"/>
+					<xs:element name="lastLogin" type="xs:dateTime" minOccurs="0"/>
+					<xs:element name="loginAttempts" type="xs:int" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="username" type="xs:string" use="required"/>
+				<xs:attribute name="accountId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="PatientType">
+		<xs:complexContent>
+			<xs:extension base="ContactType">
+				<xs:sequence>
+					<xs:element name="locations" type="LocationType" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="ssn" type="xs:string" use="required"/>
+				<xs:attribute name="accountId" type="xs:string" use="required"/>
+				<xs:attribute name="patientId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="LocationType">
+		<xs:complexContent>
+			<xs:extension base="AuditType">
+				<xs:sequence>
+					<xs:element name="name" type="xs:string" minOccurs="1"/>
+					<xs:element name="address" type="AddressInfoType" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="optional"/>
+				<xs:attribute name="accountId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="RunType">
+		<xs:complexContent>
+			<xs:extension base="AuditType">
+				<xs:sequence>
+					<xs:element name="pickupOn" type="xs:dateTime" minOccurs="1"/>
+					<xs:element name="startLocation" type="LocationType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="finalLocation" type="LocationType" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="optional"/>
+				<xs:attribute name="accountId" type="xs:string" use="required"/>
+				<xs:attribute name="driverId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="RideType">
+		<xs:complexContent>
+			<xs:extension base="AuditType">
+				<xs:sequence>
+					<xs:element name="appointmentOn" type="xs:dateTime" minOccurs="1"/>
+					<xs:element name="pickupOn" type="xs:dateTime" minOccurs="0"/>
+					<xs:element name="additionalRiders" type="xs:int" minOccurs="0"/>
+					<xs:element name="mileage" type="xs:double" minOccurs="0"/>
+					<xs:element name="price" type="xs:double" minOccurs="0"/>
+					<xs:element name="vehicleType" type="VehicleTypeEnum" minOccurs="0"/>
+					<xs:element name="specRequirements" type="xs:string" minOccurs="0"/>
+					<xs:element name="notes" type="xs:string" minOccurs="0"/>
+					
+					<xs:element name="pickupAddress" type="AddressInfoType" minOccurs="1"/>
+					<xs:element name="dropOffAddress" type="AddressInfoType" minOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="optional"/>
+				<xs:attribute name="accountId" type="xs:string" use="required"/>
+				<xs:attribute name="dateAsString" type="xs:string" use="required"/>
+				<xs:attribute name="extTripId" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="AccountType">
+		<xs:complexContent>
+			<xs:extension base="AuditType">
+				<xs:sequence>
+					<xs:element name="name" type="xs:string" minOccurs="0"/>
+					<xs:element name="secretKey" type="xs:base64Binary" minOccurs="1"/>
+					<xs:element name="secretKeyResetOn" type="xs:dateTime" minOccurs="0"/>
+					
+					<xs:element name="addresses" type="AddressInfoType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="phones" type="PhoneInfoType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="contacts" type="ContactType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="vehicles" type="VehicleType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="users" type="UserType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="patients" type="PatientType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="locationIds" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="settings" type="NameValueType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="optional"/>
+				<xs:attribute name="apiKey" type="xs:string" use="required"/>
+				<xs:attribute name="ein" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

@@ -58,8 +58,8 @@
  
  	<!-- ********************************************** AMQP SETUP ************************************************************* -->
 	
-	<amqp:connector name="amqpAutoAckConnector" host="${rabbitmq.host}" port="${rabbitmq.port}" 
-		username="${rabbitmq.username}" password="${rabbitmq.password}" />
+	<!--amqp:connector name="amqpAutoAckConnector" host="${rabbitmq.host}" port="${rabbitmq.port}" 
+		username="${rabbitmq.username}" password="${rabbitmq.password}" /-->
 	
 	<!-- ********************************************** SECURITY ************************************************************* -->
 

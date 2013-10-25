@@ -18,7 +18,7 @@ import com.nebulent.vectura.persistence.mongodb.CoreRepository;
  * @author mfedorov
  *
  */
-@Document(collection=CoreRepository.COLLECTION_CUSTOMERS)
+@Document(collection=CoreRepository.COLLECTION_ACCOUNTS)
 public class Account extends BaseEntity {
 
 	/**

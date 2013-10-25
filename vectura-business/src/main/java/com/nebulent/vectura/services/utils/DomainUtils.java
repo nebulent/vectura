@@ -53,6 +53,10 @@ public final class DomainUtils {
 		for(nebulent.schema.software.vectura._1.Patient patient: accountType.getPatients()){
 			account.getPatients().add(toPatient(patient));
 		}
+		
+		for(nebulent.schema.software.vectura._1.Vehicle vehicle: accountType.getVehicles()){
+			account.getVehicles().add(toVehicle(vehicle));
+		}
 		return account;
 	}
 	
@@ -85,6 +89,10 @@ public final class DomainUtils {
 		
 		for(Patient patient: accountType.getPatients()){
 			account.getPatients().add(toPatient(patient));
+		}
+		
+		for(Vehicle vehicle: accountType.getVehicles()){
+			account.getVehicles().add(toVehicleType(vehicle));
 		}
 		
 		return account;

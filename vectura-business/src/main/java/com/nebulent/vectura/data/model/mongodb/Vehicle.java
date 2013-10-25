@@ -3,7 +3,6 @@
  */
 package com.nebulent.vectura.data.model.mongodb;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,7 +20,7 @@ public class Vehicle extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -5886761175614951646L;
 	
-	@Id
+	@Indexed
 	private String vin;
 	@Indexed
 	private String accountUuid;

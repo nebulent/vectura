@@ -16,8 +16,6 @@ import org.mule.api.security.UnauthorisedException;
 import org.mule.api.security.UnknownAuthenticationTypeException;
 import org.mule.config.i18n.CoreMessages;
 import org.mule.security.AbstractAuthenticationFilter;
-import org.mule.security.DefaultMuleAuthentication;
-import org.mule.security.MuleCredentials;
 
 import com.nebulent.vectura.services.AuthenticationService;
 
@@ -79,16 +77,22 @@ public class SignedRequestProcessingFilter extends AbstractAuthenticationFilter{
             if (logger.isDebugEnabled()){
                 logger.debug("Authentication request for user: " + apiKeyEval.toString() + " failed: " + e.toString());
             }
+            System.out.println("Authentication request for user: " + apiKeyEval.toString() + " failed: " + e.toString());
             throw new UnauthorisedException(CoreMessages.authFailedForUser(apiKeyEval.toString()), e);
 		}
         
-        Authentication authResult = new DefaultMuleAuthentication(new MuleCredentials(apiKeyEval.toString(), signatureEval.toString().toCharArray()));
+        //Authentication authResult = new DefaultMuleAuthentication(new MuleCredentials(apiKeyEval.toString(), signatureEval.toString().toCharArray()));
 
+        org.springframework.security.core.Authentication springAuth = new SignedRequestAuthenticationToken(apiKeyEval.toString(), signatureEval.toString().toCharArray());
+        Authentication authResult = new VecturaAuthentication(springAuth, null, event);
+        
         // Authentication success
         if (logger.isDebugEnabled()){
             logger.debug("Authentication success: " + authResult.toString());
         }
 
+        System.out.println("Authentication success: " + authResult.toString());
+        
         SecurityContext context = getSecurityManager().createSecurityContext(authResult);
         context.setAuthentication(authResult);
         event.getSession().setSecurityContext(context);

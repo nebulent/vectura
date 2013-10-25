@@ -2,14 +2,13 @@ package com.nebulent.vectura.data.model.mongodb;
 
 public enum PhoneTypeEnum {
 
-	BUSINESS("B", "Business (Primary)", 0),
-	WORK("W", "Work", 1),
-	HOME("H", "Home", 2),
-	CELL("C", "Cell", 3),
-	FAX("F", "Fax", 4);
+	BUSINESS("BUSINESS", 0),
+	WORK("WORK", 1),
+	HOME("HOME", 2),
+	CELL("CELL", 3),
+	FAX("WORK", 4);
 	
 	private String code;
-	private String description;
 	private int sort;
 	
 	/**
@@ -17,9 +16,8 @@ public enum PhoneTypeEnum {
 	 * @param description
 	 * @param sort
 	 */
-	private PhoneTypeEnum(String code, String description, int sort) {
+	private PhoneTypeEnum(String code, int sort) {
 		this.code = code;
-		this.description = description;
 		this.sort = sort;
 	}
 	
@@ -44,20 +42,6 @@ public enum PhoneTypeEnum {
 		this.code = code;
 	}
 	
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	/**
 	 * @return the sort
 	 */

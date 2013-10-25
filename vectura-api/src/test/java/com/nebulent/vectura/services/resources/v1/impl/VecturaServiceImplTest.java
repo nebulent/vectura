@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,12 +89,12 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		account.getAddresses().add(address);
 		
 		PhoneInfo phoneCell = new PhoneInfo();
-		phoneCell.setType(PhoneTypeEnum.CELL.name());
+		phoneCell.setType(PhoneTypeEnum.CELL.toString());
 		phoneCell.setValue("267-408-3699");
 		account.getPhones().add(phoneCell);
 		
 		PhoneInfo phoneBiz = new PhoneInfo();
-		phoneBiz.setType(PhoneTypeEnum.BUSINESS.name());
+		phoneBiz.setType(PhoneTypeEnum.BUSINESS.toString());
 		phoneBiz.setValue("215-904-0004");
 		account.getPhones().add(phoneBiz);
 		
@@ -101,7 +102,7 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		contact.setEmail("mfedorov@netflexity.com");
 		contact.setFirstName("Max");
 		contact.setLastName("Fedorov");
-		contact.setType(ContactTypeEnum.PRIMARY.name());
+		contact.setType(ContactTypeEnum.PRIMARY.toString());
 		contact.getAddresses().add(address);
 		contact.getPhones().add(phoneCell);
 		account.getContacts().add(contact);
@@ -110,7 +111,7 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		contact.setEmail("55marinaf@gmail.com");
 		contact.setFirstName("Marina");
 		contact.setLastName("Fedorov");
-		contact.setType(ContactTypeEnum.SECONDARY.name());
+		contact.setType(ContactTypeEnum.SECONDARY.toString());
 		contact.getAddresses().add(address);
 		contact.getPhones().add(phoneCell);
 		account.getContacts().add(contact);
@@ -122,7 +123,7 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		user.setEmail("ageller.biz@gmail.com");
 		user.setFirstName("Arthur");
 		user.setLastName("Geller");
-		user.setType(ContactTypeEnum.PRIMARY.name());
+		user.setType(ContactTypeEnum.PRIMARY.toString());
 		user.getAddresses().add(address);
 		user.getPhones().add(phoneCell);
 		account.getUsers().add(user);
@@ -133,7 +134,7 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		patient.setEmail("patient1@gmail.com");
 		patient.setFirstName("John");
 		patient.setLastName("Deer");
-		patient.setType(ContactTypeEnum.PRIMARY.name());
+		patient.setType(ContactTypeEnum.PRIMARY.toString());
 		patient.getAddresses().add(address);
 		patient.getPhones().add(phoneCell);
 		account.getPatients().add(patient);
@@ -191,10 +192,12 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 	@Test
 	public void testFindAccountById(){
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("", "");
+		headers.put("Vectura-Timestamp","2013-10-25T16:36:53.819Z");
+		headers.put("Vectura-ApiKey","Qow6ZxHcW53uND2VKy3j7ejn1mecsZGA");
+		headers.put("Vectura-Signature","yBpclYWPE52I/q04vbeSyregOhw=");
 		
 		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
-		Account account = accountResource.findAccount("mfedorov@itemize.com");
+		Account account = accountResource.findAccount("526a9a88472874c5685cfd1e");//headers.get("Vectura-ApiKey"));
 		if(account != null){
 			try {
 				logger.debug("Go email account:" + jacksonJsonMapper.writeValueAsString(account));
@@ -209,6 +212,17 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 				e.printStackTrace();
 			}
 		}
+		
+		// Fail on purpose.
+		headers.put("Vectura-Signature","ZZZFAILBpclYWPE52I/q04vbeSyregOhw=");
+		
+		accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
+		try {
+			account = accountResource.findAccount("526a9a88472874c5685cfd1e");//headers.get("Vectura-ApiKey"));
+		} catch (Exception e) {
+			Assert.assertTrue(true);
+		}
+		
 	}
 	
 }

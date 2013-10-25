@@ -69,6 +69,15 @@ public class SignatureServiceImpl implements SignatureService {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.services.SignatureService#generateTimestamp(java.util.Calendar)
+	 */
+	@Override
+	public String generateTimestamp(Calendar calendar) {
+		calendar.setTimeZone(timeZone);
+		return generateTimestampAsString(calendar);
+	}
+
 	/**
      * @param calendar
      * @return

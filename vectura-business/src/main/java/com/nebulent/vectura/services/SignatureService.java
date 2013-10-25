@@ -44,6 +44,11 @@ public interface SignatureService {
 	Calendar generateTimestamp();
 	
 	/**
+	 * @return
+	 */
+	String generateTimestamp(Calendar calendar);
+	
+	/**
 	 * @param timestamp
 	 * @return
 	 */

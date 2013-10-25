@@ -23,7 +23,7 @@ import com.nebulent.vectura.persistence.repositories.mongodb.RunRepository;
 public interface CoreRepository {
 
 	
-	public static final String COLLECTION_CUSTOMERS = "customers";
+	public static final String COLLECTION_ACCOUNTS = "accounts";
 	public static final String COLLECTION_VEHICLES = "vehicles";
 	public static final String COLLECTION_USERS = "users";
 	public static final String COLLECTION_LOCATIONS = "locations";

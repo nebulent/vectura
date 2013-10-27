@@ -29,6 +29,7 @@ public class AddressInfo extends BaseEntity {
 	private String stateOrProvince;
 	private String zipCode;
 	private String countryCode = "US";
+	private String name;
 	
 	@Indexed
 	private String hash;
@@ -150,11 +151,36 @@ public class AddressInfo extends BaseEntity {
 	public void setLocation(double[] location) {
 		this.location = location;
 	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	/**
 	 * 
 	 */
 	public void hash(){
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest.update(toString().getBytes());
+			hash = new String(messageDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			hash = String.valueOf(toString().hashCode());
+		}
+	}
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.data.model.mongodb.BaseEntity#toString()
+	 */
+	@Override
+	public String toString() {
 		StringBuilder builder = new StringBuilder(256);
 		builder.append(getAddressLine1().toUpperCase().trim());
 		if(StringUtils.isNotBlank(getAddressLine2())){
@@ -163,17 +189,14 @@ public class AddressInfo extends BaseEntity {
 		if(StringUtils.isNotBlank(getAddressLine3())){
 			builder.append("|").append(getAddressLine3().toUpperCase().trim());
 		}
-		builder.append("|").append(getCity().toUpperCase().trim())
-		.append("|").append(getStateOrProvince().toUpperCase().trim())
-		.append("|").append(getZipCode().toUpperCase().trim())
+		if(StringUtils.isNotBlank(getCity())){
+			builder.append("|").append(getCity().toUpperCase().trim());
+		}
+		builder.append("|").append(getStateOrProvince().toUpperCase().trim())
+		.append("|").append(getZipCode().trim())
 		.append("|").append(getCountryCode().toUpperCase().trim());
 		
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			messageDigest.update(builder.toString().getBytes());
-			hash = new String(messageDigest.digest());
-		} catch (NoSuchAlgorithmException e) {
-			hash = String.valueOf(builder.hashCode());
-		}
+		return builder.toString();
 	}
+	
 }

@@ -16,7 +16,8 @@ import com.nebulent.vectura.persistence.mongodb.CoreRepository;
  */
 @Document(collection=CoreRepository.COLLECTION_LOCATIONS)
 @CompoundIndexes({
-    @CompoundIndex(name = "search1_idx", def = "{'accountUuid': 1, 'name': 1, 'address.zipCode': 1}")
+    @CompoundIndex(name = "searchByZip_idx", def = "{'accountUuid': 1, 'name': 1, 'address.zipCode': 1}"),
+    @CompoundIndex(name = "searchByHash_idx", def = "{'name': 1, 'address.hash': 1}")
 })
 public class Location extends BaseEntity{
 

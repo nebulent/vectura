@@ -13,4 +13,9 @@ import com.nebulent.vectura.data.model.mongodb.Location;
  */
 public interface LocationRepository extends MongoRepository<Location, String>{
 
+	/**
+	 * @param hash
+	 * @return
+	 */
+	public Location findByAddressHash(String hash);
 }

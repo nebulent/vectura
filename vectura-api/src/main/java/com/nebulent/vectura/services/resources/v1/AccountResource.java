@@ -122,7 +122,7 @@ public interface AccountResource {
     })
     @POST
     @Path("accounts/{accountId}/locations")
-    Location addAccountLocation(
+    Location createLocation(
     		@Description("String accountId") @PathParam("accountId") String accountId,
     		@Description("Location locations") Location location);
     

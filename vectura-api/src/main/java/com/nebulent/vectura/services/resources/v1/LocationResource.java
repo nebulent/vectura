@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -51,17 +50,4 @@ public interface LocationResource {
 	@GET
 	@Path("locations/{id}/runs")
 	List<Run> findRunsByLocation(@Description("String id") @PathParam("id") String id);
-	
-	@Descriptions({
-        @Description(value = "Creates location and stores it", target = DocTarget.METHOD),
-        @Description(value = "Returns created location with ID", target = DocTarget.RETURN),
-        @Description(value = "String account ID", target = DocTarget.REQUEST),
-        @Description(value = "Location location", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/accounts/{accountId}/locations", target = DocTarget.RESOURCE)
-    })
-	@POST
-	@Path("locations")
-	Location createLocation(
-			@Description("String accountId") @PathParam("accountId") String accountId,
-			@Description("Location location") Location location);
 }

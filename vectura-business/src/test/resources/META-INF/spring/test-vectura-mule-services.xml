@@ -10,6 +10,10 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
        ">
 
+	<bean id="geocoder" class="com.google.code.geocoder.Geocoder" />
+	
+	<bean id="mapService" class="com.nebulent.vectura.services.impl.MapServiceImpl" autowire="byType" />
+	
 	<bean id="signatureService" class="com.nebulent.vectura.services.impl.SignatureServiceImpl" />
 	
 	<bean id="authenticationService" class="com.nebulent.vectura.services.impl.AuthenticationServiceImpl" autowire="byType">

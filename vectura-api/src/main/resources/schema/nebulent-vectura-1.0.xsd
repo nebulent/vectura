@@ -80,6 +80,7 @@ Enumerations
 	<xs:complexType name="AddressInfoType">
 		<xs:sequence>
 			<xs:element name="type" type="xs:string" minOccurs="0"/>
+			<xs:element name="name" type="xs:string" minOccurs="0"/>
 			<xs:element name="digest" type="xs:base64Binary" minOccurs="1"/>
 			<xs:element name="addressLine1" type="xs:string" minOccurs="1"/>
 			<xs:element name="addressLine2" type="xs:string" minOccurs="0"/>

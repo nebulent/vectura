@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import com.nebulent.vectura.services.resources.v1.AccountResource;
 import com.nebulent.vectura.services.resources.v1.AdminResource;
+import com.nebulent.vectura.services.resources.v1.LocationResource;
 import com.nebulent.vectura.services.resources.v1.ResourceTestBase;
 
 /**
@@ -161,32 +162,40 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		accountResource.createAccount(account);
 	}
 	
+	@Test
 	public void createLocations(){
 		AddressInfo address = new AddressInfo();
-		address.setAddressLine1("55 Kasi Circle");
-		address.setCity("Warminster");
+		address.setAddressLine1("114 South 18th Street");
+		address.setCity("Philadelphia");
 		address.setStateOrProvince("PA");
-		address.setZipCode("18974");
-		// 40.224238, -75.056587
-		address.setLat(new BigDecimal(40.224238));
-		address.setLon(new BigDecimal(-75.056587));
-		
-		StringBuilder locationNameBuilder = new StringBuilder(256);
-		locationNameBuilder.append(address.getAddressLine1().toUpperCase().trim());
-		if(StringUtils.isNotBlank(address.getAddressLine2())){
-			locationNameBuilder.append(" ").append(address.getAddressLine2().toUpperCase().trim());
-		}
-		if(StringUtils.isNotBlank(address.getAddressLine3())){
-			locationNameBuilder.append(" ").append(address.getAddressLine3().toUpperCase().trim());
-		}
-		locationNameBuilder.append(" ").append(address.getCity().toUpperCase().trim())
-		.append(" ").append(address.getStateOrProvince().toUpperCase().trim())
-		.append(" ").append(address.getZipCode().toUpperCase().trim())
-		.append(" ").append(address.getCountryCode().toUpperCase().trim());
+		address.setZipCode("19103");
+		address.setCountryCode("US");
 		
 		Location location = new Location();
 		location.setAddress(address);
-		location.setName(locationNameBuilder.toString());
+		location.setName("Byblos");
+		
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Vectura-Timestamp","2013-10-25T16:36:53.819Z");
+		headers.put("Vectura-ApiKey","Qow6ZxHcW53uND2VKy3j7ejn1mecsZGA");
+		headers.put("Vectura-Signature","yBpclYWPE52I/q04vbeSyregOhw=");
+		
+		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
+		location = accountResource.createLocation("526a9a88472874c5685cfd1e", location);
+		if(location != null){
+			try {
+				logger.debug("Location:" + jacksonJsonMapper.writeValueAsString(location));
+			} catch (JsonGenerationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Test

@@ -11,6 +11,10 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 	
+	<bean id="geocoder" class="com.google.code.geocoder.Geocoder" />
+	
+	<bean id="mapService" class="com.nebulent.vectura.services.impl.MapServiceImpl" autowire="byType" />
+	
 	<bean id="vecturaService" class="com.nebulent.vectura.services.resources.v1.impl.VecturaServiceImpl" autowire="byName" />
 	
 	<bean id="adminService" class="com.nebulent.vectura.services.resources.v1.impl.VecturaAdminServiceImpl" autowire="byName" />

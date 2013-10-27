@@ -11,6 +11,9 @@
 	<version>1.0.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Nebulent :: Vectura Project :: Business</name>
+	<properties>
+		<google-geocoder-java>0.15</google-geocoder-java>
+	</properties>
 	
 	<!-- Project Dependencies -->
 	<dependencies>
@@ -57,5 +60,11 @@
 			<artifactId>mongo-java-driver</artifactId>
 			<version>${mongo.java.driver.version}</version>
 		</dependency>
+		<!-- Google Geocoder API. -->
+		<dependency>
+    		<groupId>com.google.code.geocoder-java</groupId>
+    		<artifactId>geocoder-java</artifactId>
+    		<version>${google-geocoder-java}</version>
+  		</dependency>
 	</dependencies>
 </project>

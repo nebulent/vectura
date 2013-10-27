@@ -6,11 +6,17 @@ package com.nebulent.vectura.services.utils;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.google.code.geocoder.model.GeocoderAddressComponent;
+import com.google.code.geocoder.model.GeocoderResult;
 import com.nebulent.vectura.data.model.mongodb.Account;
 import com.nebulent.vectura.data.model.mongodb.AddressInfo;
 import com.nebulent.vectura.data.model.mongodb.Contact;
 import com.nebulent.vectura.data.model.mongodb.ContactTypeEnum;
+import com.nebulent.vectura.data.model.mongodb.Location;
 import com.nebulent.vectura.data.model.mongodb.Patient;
 import com.nebulent.vectura.data.model.mongodb.PhoneInfo;
 import com.nebulent.vectura.data.model.mongodb.PhoneTypeEnum;
@@ -186,6 +192,8 @@ public final class DomainUtils {
 		address.setCity(addressType.getCity());
 		address.setStateOrProvince(addressType.getStateOrProvince());
 		address.setZipCode(addressType.getZipCode());
+		address.setCountryCode(addressType.getCountryCode());
+		address.setName(addressType.getName());
 		if(addressType.getLat() != null && addressType.getLon() != null){
 			address.setLocation(new double[]{addressType.getLat().doubleValue(), addressType.getLon().doubleValue()});
 		}
@@ -204,6 +212,8 @@ public final class DomainUtils {
 		address.setCity(addressType.getCity());
 		address.setStateOrProvince(addressType.getStateOrProvince());
 		address.setZipCode(addressType.getZipCode());
+		address.setCountryCode(addressType.getCountryCode());
+		address.setName(addressType.getName());
 		if(addressType.getLocation() != null && addressType.getLocation().length == 2){
 			address.setLat(new BigDecimal(addressType.getLocation()[0]));
 			address.setLon(new BigDecimal(addressType.getLocation()[1]));
@@ -280,6 +290,28 @@ public final class DomainUtils {
 	}
 	
 	/**
+	 * @param locationType
+	 * @return
+	 */
+	public static Location toLocation(nebulent.schema.software.vectura._1.Location locationType){
+		Location location = new Location();
+		location.setName(locationType.getName());
+		location.setAddress(toAddress(locationType.getAddress()));
+		return location;
+	}
+	
+	/**
+	 * @param locationType
+	 * @return
+	 */
+	public static nebulent.schema.software.vectura._1.Location toLocation(Location locationType){
+		nebulent.schema.software.vectura._1.Location location = new nebulent.schema.software.vectura._1.Location();
+		location.setName(locationType.getName());
+		location.setAddress(toAddress(locationType.getAddress()));
+		return location;
+	}
+	
+	/**
 	 * @param userType
 	 * @return
 	 */
@@ -326,6 +358,100 @@ public final class DomainUtils {
 		}
 		
 		return user;
+	}
+	
+	/**
+	 * @param result
+	 * @return
+	 */
+	public static AddressInfo toAddressInfo(GeocoderResult result){
+		AddressInfo addressInfo = new AddressInfo();
+		if(result.getGeometry() != null && result.getGeometry().getLocation() != null){
+			addressInfo.setLocation(new double[]{result.getGeometry().getLocation().getLat().doubleValue(), result.getGeometry().getLocation().getLng().doubleValue()});
+		}
+		
+		String street_number = null;
+		String street_address = null;
+		String route = null;
+		String administrative_area_level_1 = null;
+		String locality = null;
+		String postal_code = null;
+		String country = null;
+		String premise = null;
+		String colloquial_area = null;
+		List<GeocoderAddressComponent> components = result.getAddressComponents();
+		for (GeocoderAddressComponent component : components) {
+			String addressType = component.getTypes().get(0);
+			if(StringUtils.isBlank(street_number) && "street_number".equalsIgnoreCase(addressType)){
+				street_number = component.getLongName();
+			}
+			else if(StringUtils.isBlank(street_address) && "street_address".equalsIgnoreCase(addressType)){
+				street_address = component.getLongName();
+			}
+			else if(StringUtils.isBlank(route) && "route".equalsIgnoreCase(addressType)){
+				route = component.getLongName();
+			}
+			else if(StringUtils.isBlank(locality) && "locality".equalsIgnoreCase(addressType)){
+				locality = component.getLongName();
+			}
+			else if(StringUtils.isBlank(administrative_area_level_1) && "administrative_area_level_1".equalsIgnoreCase(addressType)){
+				administrative_area_level_1 = component.getLongName();
+			}
+			else if(StringUtils.isBlank(postal_code) && "postal_code".equalsIgnoreCase(addressType)){
+				postal_code = component.getLongName();
+			}
+			else if(StringUtils.isBlank(country) && "country".equalsIgnoreCase(addressType)){
+				country = component.getLongName();
+			}
+			else if(StringUtils.isBlank(premise) && "premise".equalsIgnoreCase(addressType)){
+				premise = component.getLongName();
+			}
+			else if(StringUtils.isBlank(colloquial_area) && "colloquial_area".equalsIgnoreCase(addressType)){
+				colloquial_area = component.getLongName();
+			}
+			else{
+				System.out.println(addressType + "=" + component.getLongName());
+			}
+		}
+		
+		if(StringUtils.isNotBlank(premise)){
+			addressInfo.setName(premise);
+		}
+		else{
+			if(StringUtils.isNotBlank(colloquial_area)){
+				addressInfo.setName(colloquial_area);
+			}
+		}
+		System.out.println("Biz name:" + addressInfo.getName());
+		if(StringUtils.isNotBlank(street_address)){
+			addressInfo.setAddressLine1(street_address);
+		}
+		else{
+			if(StringUtils.isNotBlank(street_number)){
+				addressInfo.setAddressLine1(street_number);
+			}
+			if(StringUtils.isNotBlank(route)){
+				if(StringUtils.isNotBlank(addressInfo.getAddressLine1())){
+					addressInfo.setAddressLine1(addressInfo.getAddressLine1() + " " + route);
+				}
+				else{
+					addressInfo.setAddressLine1(route);
+				}
+			}
+		}
+		if(StringUtils.isNotBlank(administrative_area_level_1)){
+			addressInfo.setStateOrProvince(administrative_area_level_1);
+		}
+		if(StringUtils.isNotBlank(locality)){
+			addressInfo.setCity(locality);
+		}
+		if(StringUtils.isNotBlank(postal_code)){
+			addressInfo.setZipCode(postal_code);
+		}
+		if(StringUtils.isNotBlank(country)){
+			addressInfo.setCountryCode(country);
+		}
+		return addressInfo;
 	}
 	
 	/**

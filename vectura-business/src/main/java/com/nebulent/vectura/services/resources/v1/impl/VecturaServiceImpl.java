@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
+import com.nebulent.vectura.services.MapService;
 import com.nebulent.vectura.services.resources.v1.AccountResource;
 import com.nebulent.vectura.services.resources.v1.LocationResource;
 import com.nebulent.vectura.services.resources.v1.RunResource;
@@ -45,7 +46,9 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 	
 	@Autowired
 	private CoreRepository mongoRepository;
-
+	@Autowired
+	private MapService mapService;
+	
 	/**
 	 * @return the mongoRepository
 	 */
@@ -58,6 +61,20 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 	 */
 	public void setMongoRepository(CoreRepository mongoRepository) {
 		this.mongoRepository = mongoRepository;
+	}
+
+	/**
+	 * @return the mapService
+	 */
+	public MapService getMapService() {
+		return mapService;
+	}
+
+	/**
+	 * @param mapService the mapService to set
+	 */
+	public void setMapService(MapService mapService) {
+		this.mapService = mapService;
 	}
 
 	@Override
@@ -121,19 +138,21 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 	}
 
 	@Override
-	public Location addAccountLocation(String accountId, Location location) {
-		// TODO Auto-generated method stub
-		return null;
+	public Location createLocation(String accountId, Location locationType) {
+		locationType.setAccountId(accountId);
+		com.nebulent.vectura.data.model.mongodb.Location location = DomainUtils.toLocation(locationType);
+		AddressInfo addressType = mapService.getLocationByAddress(location.getAddress().toString());
+		com.nebulent.vectura.data.model.mongodb.AddressInfo addressInfo = DomainUtils.toAddress(addressType);
+		if(addressInfo != null){
+			location.setAddress(addressInfo);
+		}
+		location.getAddress().hash();
+		location = getMongoRepository().getLocationRepository().save(location);
+		return DomainUtils.toLocation(location);
 	}
 
 	@Override
 	public List<Location> searchAccountLocations(String accountId, String addressHash) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Location createLocation(String accountId, Location location) {
 		// TODO Auto-generated method stub
 		return null;
 	}

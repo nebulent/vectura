@@ -7,8 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.annotation.Transient;
 
 /**
  * @author mfedorov
@@ -30,11 +29,9 @@ public class AddressInfo extends BaseEntity {
 	private String zipCode;
 	private String countryCode = "US";
 	private String name;
-	
-	@Indexed
 	private String hash;
 	
-	@GeoSpatialIndexed
+	@Transient
 	private double[] location;
 	
 	/**

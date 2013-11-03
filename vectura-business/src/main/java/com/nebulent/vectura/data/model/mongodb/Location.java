@@ -5,6 +5,7 @@ package com.nebulent.vectura.data.model.mongodb;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -31,6 +32,9 @@ public class Location extends BaseEntity{
 	private String patientUuid;
 	private String name;
 	private AddressInfo address;
+	
+	@GeoSpatialIndexed
+	private double[] location;
 	
 	/**
 	 * @return the accountUuid
@@ -79,5 +83,17 @@ public class Location extends BaseEntity{
 	 */
 	public void setAddress(AddressInfo address) {
 		this.address = address;
+	}
+	/**
+	 * @return the location
+	 */
+	public double[] getLocation() {
+		return location;
+	}
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(double[] location) {
+		this.location = location;
 	}
 }

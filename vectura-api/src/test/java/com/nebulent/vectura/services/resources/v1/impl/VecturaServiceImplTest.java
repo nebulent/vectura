@@ -5,8 +5,10 @@ package com.nebulent.vectura.services.resources.v1.impl;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import nebulent.schema.software.vectura._1.Account;
@@ -22,7 +24,6 @@ import nebulent.schema.software.vectura._1.User;
 import nebulent.schema.software.vectura._1.Vehicle;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -33,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import com.nebulent.vectura.services.resources.v1.AccountResource;
 import com.nebulent.vectura.services.resources.v1.AdminResource;
-import com.nebulent.vectura.services.resources.v1.LocationResource;
 import com.nebulent.vectura.services.resources.v1.ResourceTestBase;
 
 /**
@@ -164,6 +164,8 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 	
 	@Test
 	public void createLocations(){
+		List<Location> locations = new ArrayList<Location>();
+		
 		AddressInfo address = new AddressInfo();
 		address.setAddressLine1("114 South 18th Street");
 		address.setCity("Philadelphia");
@@ -174,6 +176,163 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		Location location = new Location();
 		location.setAddress(address);
 		location.setName("Byblos");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("490 Woodhaven Rd.");
+		address.setCity("Philadelphia");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19116");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Alex Fedorov");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("157 Forge Lane");
+		address.setCity("Feasterville");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19053");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Ilya Pekarev");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("648 Korisa Drive");
+		address.setCity("Huntingdon Valley");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19006");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Mark Kogan");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("1630 Welsh Rd Unit G56");
+		address.setCity("Philadelphia");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19115");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Marina Khanina");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("55 Kasi Circle");
+		address.setCity("Warminster");
+		address.setStateOrProvince("PA");
+		address.setZipCode("18974");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Max Fedorov");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("51 Hope Rd.");
+		address.setCity("Holland");
+		address.setStateOrProvince("PA");
+		address.setZipCode("18966");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Alex Zhitomirsky");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("755 Edden Ct.");
+		address.setCity("Southampton");
+		address.setStateOrProvince("PA");
+		address.setZipCode("18966");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Mark Jacobs");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("2368 Dorchester St. West");
+		address.setCity("Furlong");
+		address.setStateOrProvince("PA");
+		address.setZipCode("18925");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Max Fedorov II");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("650 Street Rd.");
+		address.setCity("Feasterville");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19053");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Sol Luna Tea Room");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("1040 Mill Creek Dr.");
+		address.setCity("Feasterville");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19053");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("B&R Family Fitness");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("220 Sycamore Cir.");
+		address.setCity("Feasterville");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19053");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Adam Smith");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("585 S Mt Vernon Circle");
+		address.setCity("Bensalem");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19020");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("John Adams");
+		locations.add(location);
+		
+		address = new AddressInfo();
+		address.setAddressLine1("1172 Bartlett Pl.");
+		address.setCity("Phila");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19115");
+		address.setCountryCode("US");
+		
+		location = new Location();
+		location.setAddress(address);
+		location.setName("Steve Bartlett");
+		locations.add(location);
 		
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Vectura-Timestamp","2013-10-25T16:36:53.819Z");
@@ -181,19 +340,21 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		headers.put("Vectura-Signature","yBpclYWPE52I/q04vbeSyregOhw=");
 		
 		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
-		location = accountResource.createLocation("526a9a88472874c5685cfd1e", location);
-		if(location != null){
-			try {
-				logger.debug("Location:" + jacksonJsonMapper.writeValueAsString(location));
-			} catch (JsonGenerationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for (Location loc : locations) {
+			loc = accountResource.createLocation("526a9a88472874c5685cfd1e", loc);
+			if(location != null){
+				try {
+					logger.debug("Location:" + jacksonJsonMapper.writeValueAsString(loc));
+				} catch (JsonGenerationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}

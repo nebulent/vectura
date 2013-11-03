@@ -31,7 +31,7 @@ public class GoogleGeocoderTest {
 
 	@Test
 	public void testGeocoding(){
-		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress("114 South 18th Street, Philadelphia, PA 19103").setLanguage("en").getGeocoderRequest();
+		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress("55 Kasi Circle, Warminster PA 18974").setLanguage("en").getGeocoderRequest();
 		GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
 		List<GeocoderResult> results = geocoderResponse.getResults();
 		for (GeocoderResult result : results) {

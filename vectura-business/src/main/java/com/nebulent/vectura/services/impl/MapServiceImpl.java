@@ -5,6 +5,8 @@ package com.nebulent.vectura.services.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import nebulent.schema.software.vectura._1.AddressInfo;
@@ -23,6 +25,8 @@ import com.nebulent.vectura.services.utils.DomainUtils;
  */
 public class MapServiceImpl implements MapService {
 
+	protected Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private Geocoder geocoder;
 	
@@ -35,7 +39,12 @@ public class MapServiceImpl implements MapService {
 		GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
 		List<GeocoderResult> results = geocoderResponse.getResults();
 		for (GeocoderResult result : results) {
-			return DomainUtils.toAddress(DomainUtils.toAddressInfo(result));
+			//if(!result.isPartialMatch()){
+				return DomainUtils.toAddress(DomainUtils.toAddressInfo(result));
+			//}
+			//else{
+			//	logger.warn("Partial match:" + result);
+			//}
 		}
 		return null;
 	}

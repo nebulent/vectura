@@ -20,6 +20,7 @@ import nebulent.schema.software.vectura._1.Run;
 import nebulent.schema.software.vectura._1.User;
 import nebulent.schema.software.vectura._1.Vehicle;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,13 +142,18 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 	public Location createLocation(String accountId, Location locationType) {
 		locationType.setAccountId(accountId);
 		com.nebulent.vectura.data.model.mongodb.Location location = DomainUtils.toLocation(locationType);
+		location.setAccountUuid(accountId);
+		
 		AddressInfo addressType = mapService.getLocationByAddress(location.getAddress().toString());
 		com.nebulent.vectura.data.model.mongodb.AddressInfo addressInfo = DomainUtils.toAddress(addressType);
-		if(addressInfo != null){
+		System.out.println(addressInfo);
+		if(addressInfo != null && StringUtils.isNotBlank(addressInfo.getAddressLine1())){
 			location.setAddress(addressInfo);
+			location.getAddress().hash();
+			location.setLocation(location.getAddress().getLocation());
+			location = getMongoRepository().getLocationRepository().save(location);
 		}
-		location.getAddress().hash();
-		location = getMongoRepository().getLocationRepository().save(location);
+		
 		return DomainUtils.toLocation(location);
 	}
 

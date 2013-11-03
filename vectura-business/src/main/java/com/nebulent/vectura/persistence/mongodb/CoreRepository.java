@@ -6,11 +6,13 @@ package com.nebulent.vectura.persistence.mongodb;
 import java.io.Serializable;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.geo.GeoResults;
 import org.springframework.data.mongodb.core.query.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.DBObject;
+import com.nebulent.vectura.data.model.mongodb.Location;
 import com.nebulent.vectura.persistence.repositories.mongodb.AccountRepository;
 import com.nebulent.vectura.persistence.repositories.mongodb.LocationRepository;
 import com.nebulent.vectura.persistence.repositories.mongodb.RideRepository;
@@ -51,6 +53,13 @@ public interface CoreRepository {
 	 */
 	public RunRepository getRunRepository();
 	
+	/**
+	 * @param accountUuid
+	 * @param position
+	 * @return
+	 */
+	public GeoResults<Location> getLocationsByDistance(String accountUuid, double[] position);
+
 	/**
 	 * @author Max Fedorov
 	 *

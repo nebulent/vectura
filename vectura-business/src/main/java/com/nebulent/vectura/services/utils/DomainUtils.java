@@ -195,7 +195,7 @@ public final class DomainUtils {
 		address.setCountryCode(addressType.getCountryCode());
 		address.setName(addressType.getName());
 		if(addressType.getLat() != null && addressType.getLon() != null){
-			address.setLocation(new double[]{addressType.getLat().doubleValue(), addressType.getLon().doubleValue()});
+			address.setLocation(new double[]{addressType.getLon().doubleValue(), addressType.getLat().doubleValue()});
 		}
 		return address;
 	}
@@ -215,8 +215,8 @@ public final class DomainUtils {
 		address.setCountryCode(addressType.getCountryCode());
 		address.setName(addressType.getName());
 		if(addressType.getLocation() != null && addressType.getLocation().length == 2){
-			address.setLat(new BigDecimal(addressType.getLocation()[0]));
-			address.setLon(new BigDecimal(addressType.getLocation()[1]));
+			address.setLon(new BigDecimal(addressType.getLocation()[0]));
+			address.setLat(new BigDecimal(addressType.getLocation()[1]));
 		}
 		return address;
 	}
@@ -367,7 +367,7 @@ public final class DomainUtils {
 	public static AddressInfo toAddressInfo(GeocoderResult result){
 		AddressInfo addressInfo = new AddressInfo();
 		if(result.getGeometry() != null && result.getGeometry().getLocation() != null){
-			addressInfo.setLocation(new double[]{result.getGeometry().getLocation().getLat().doubleValue(), result.getGeometry().getLocation().getLng().doubleValue()});
+			addressInfo.setLocation(new double[]{result.getGeometry().getLocation().getLng().doubleValue(), result.getGeometry().getLocation().getLat().doubleValue()});
 		}
 		
 		String street_number = null;

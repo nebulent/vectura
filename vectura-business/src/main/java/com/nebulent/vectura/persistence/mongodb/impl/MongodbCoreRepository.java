@@ -6,7 +6,15 @@ package com.nebulent.vectura.persistence.mongodb.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.geo.Distance;
+import org.springframework.data.mongodb.core.geo.GeoResults;
+import org.springframework.data.mongodb.core.geo.Metrics;
+import org.springframework.data.mongodb.core.geo.Point;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
+import org.springframework.data.mongodb.core.query.Query;
 
+import com.nebulent.vectura.data.model.mongodb.Location;
 import com.nebulent.vectura.persistence.mongodb.BaseMongodbRepository;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 import com.nebulent.vectura.persistence.repositories.mongodb.AccountRepository;
@@ -20,6 +28,8 @@ import com.nebulent.vectura.persistence.repositories.mongodb.RunRepository;
  */
 public class MongodbCoreRepository extends BaseMongodbRepository implements CoreRepository{
 	
+	public static final String FIELD_ACCOUNT_UUID = "accountUuid";
+
 	public static final String FIELD_ID = "_id";
 	
 	protected static final Logger logger = LoggerFactory.getLogger(MongodbCoreRepository.class);
@@ -95,5 +105,17 @@ public class MongodbCoreRepository extends BaseMongodbRepository implements Core
 	 */
 	public void setRunRepository(RunRepository runRepository) {
 		this.runRepository = runRepository;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.persistence.mongodb.CoreRepository#getLocationsByDistance(java.lang.String, double[])
+	 */
+	@Override
+	public GeoResults<Location> getLocationsByDistance(String accountUuid, double[] position){
+		Point location = new Point(position[0], position[1]);
+		Query query = Query.query(Criteria.where(FIELD_ACCOUNT_UUID).is(accountUuid));
+		NearQuery nearQuery = NearQuery.near(location).maxDistance(new Distance(100, Metrics.MILES)).query(query);
+		GeoResults<Location> results = mongoTemplate.geoNear(nearQuery, Location.class);
+		return results;
 	}
 }

@@ -17,6 +17,7 @@ import nebulent.schema.software.vectura._1.ContactType;
 import nebulent.schema.software.vectura._1.Location;
 import nebulent.schema.software.vectura._1.Patient;
 import nebulent.schema.software.vectura._1.PhoneInfo;
+import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.User;
 import nebulent.schema.software.vectura._1.Vehicle;
 
@@ -46,7 +47,7 @@ public interface AccountResource {
         @Description(value = "Add address to account", target = DocTarget.METHOD),
         @Description(value = "Returns added address", target = DocTarget.RETURN),
         @Description(value = "AddressInfo address", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/accounts", target = DocTarget.RESOURCE)
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/addresses", target = DocTarget.RESOURCE)
     })
     @POST
     @Path("accounts/{accountId}/addresses")
@@ -58,7 +59,7 @@ public interface AccountResource {
         @Description(value = "Add contact to account", target = DocTarget.METHOD),
         @Description(value = "Returns added contact", target = DocTarget.RETURN),
         @Description(value = "ContactType contact", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/contacts", target = DocTarget.RESOURCE)
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/contacts", target = DocTarget.RESOURCE)
     })
     @POST
     @Path("accounts/{accountId}/contacts")
@@ -70,7 +71,7 @@ public interface AccountResource {
         @Description(value = "Add phone to account", target = DocTarget.METHOD),
         @Description(value = "Returns added phone", target = DocTarget.RETURN),
         @Description(value = "PhoneInfo phone", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/phones", target = DocTarget.RESOURCE)
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/phones", target = DocTarget.RESOURCE)
     })
     @POST
     @Path("accounts/{accountId}/phones")
@@ -82,7 +83,7 @@ public interface AccountResource {
         @Description(value = "Add vehicle to account", target = DocTarget.METHOD),
         @Description(value = "Returns added vehicle", target = DocTarget.RETURN),
         @Description(value = "Vehicle vehicle", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/vehicles", target = DocTarget.RESOURCE)
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/vehicles", target = DocTarget.RESOURCE)
     })
     @POST
     @Path("accounts/{accountId}/vehicles")
@@ -94,7 +95,7 @@ public interface AccountResource {
         @Description(value = "Add user to account", target = DocTarget.METHOD),
         @Description(value = "Returns added user", target = DocTarget.RETURN),
         @Description(value = "User user", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/users", target = DocTarget.RESOURCE)
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/users", target = DocTarget.RESOURCE)
     })
     @POST
     @Path("accounts/{accountId}/users")
@@ -106,7 +107,7 @@ public interface AccountResource {
         @Description(value = "Add patient to account", target = DocTarget.METHOD),
         @Description(value = "Returns added patient", target = DocTarget.RETURN),
         @Description(value = "Patient patient", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/patients", target = DocTarget.RESOURCE)
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/patients", target = DocTarget.RESOURCE)
     })
     @POST
     @Path("accounts/{accountId}/patients")
@@ -118,25 +119,50 @@ public interface AccountResource {
         @Description(value = "Add locations to account", target = DocTarget.METHOD),
         @Description(value = "Returns added locations", target = DocTarget.RETURN),
         @Description(value = "Location locations", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/locations", target = DocTarget.RESOURCE)
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/locations", target = DocTarget.RESOURCE)
     })
     @POST
     @Path("accounts/{accountId}/locations")
-    Location createLocation(
+    Location createAccountLocation(
     		@Description("String accountId") @PathParam("accountId") String accountId,
     		@Description("Location locations") Location location);
+    
+    @Descriptions({
+        @Description(value = "Add ride for account", target = DocTarget.METHOD),
+        @Description(value = "Returns added ride", target = DocTarget.RETURN),
+        @Description(value = "Ride ride", target = DocTarget.REQUEST),
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/rides", target = DocTarget.RESOURCE)
+    })
+    @POST
+    @Path("accounts/{accountId}/rides")
+    Ride createAccountRide(
+    		@Description("String accountId") @PathParam("accountId") String accountId,
+    		@Description("Ride ride") Ride ride);
     
     @Descriptions({
         @Description(value = "Gets list of locations by account", target = DocTarget.METHOD),
         @Description(value = "Returns list of locations", target = DocTarget.RETURN),
         @Description(value = "String account ID", target = DocTarget.REQUEST),
         @Description(value = "String address hash to search by", target = DocTarget.REQUEST),
-        @Description(value = "GET http://{host}/api/accounts/{accountId}/locations", target = DocTarget.RESOURCE)
+        @Description(value = "GET http://{host}/api/accounts/{accountId}/locations?addressHash={addressHash}", target = DocTarget.RESOURCE)
     })
 	@GET
 	@Path("accounts/{accountId}/locations")
 	List<Location> searchAccountLocations(
 			@Description("String accountId") @PathParam("accountId") String accountId,
 			@Description("String addressHash") @QueryParam("addressHash") String addressHash);
+    
+    @Descriptions({
+        @Description(value = "Gets list of rides by account", target = DocTarget.METHOD),
+        @Description(value = "Returns list of rides", target = DocTarget.RETURN),
+        @Description(value = "String account ID", target = DocTarget.REQUEST),
+        @Description(value = "String date to search by", target = DocTarget.REQUEST),
+        @Description(value = "GET http://{host}/api/accounts/{accountId}/rides?date={date}", target = DocTarget.RESOURCE)
+    })
+	@GET
+	@Path("accounts/{accountId}/rides")
+	List<Ride> findAccountRidesByDate(
+			@Description("String accountId") @PathParam("accountId") String accountId,
+			@Description("String date") @QueryParam("date") String date);
     
 }

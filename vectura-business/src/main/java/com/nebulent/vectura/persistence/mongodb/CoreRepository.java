@@ -12,7 +12,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.DBObject;
+import com.nebulent.vectura.data.model.mongodb.AddressInfo;
+import com.nebulent.vectura.data.model.mongodb.Contact;
 import com.nebulent.vectura.data.model.mongodb.Location;
+import com.nebulent.vectura.data.model.mongodb.Patient;
+import com.nebulent.vectura.data.model.mongodb.PhoneInfo;
+import com.nebulent.vectura.data.model.mongodb.User;
+import com.nebulent.vectura.data.model.mongodb.Vehicle;
 import com.nebulent.vectura.persistence.repositories.mongodb.AccountRepository;
 import com.nebulent.vectura.persistence.repositories.mongodb.LocationRepository;
 import com.nebulent.vectura.persistence.repositories.mongodb.RideRepository;
@@ -59,6 +65,42 @@ public interface CoreRepository {
 	 * @return
 	 */
 	public GeoResults<Location> getLocationsByDistance(String accountUuid, double[] position);
+
+	/**
+	 * @param accountId
+	 * @param patient
+	 */
+	public void addAccountPatient(String accountId, Patient patient);
+
+	/**
+	 * @param accountId
+	 * @param vehicle
+	 */
+	public void addAccountVehicle(String accountId, Vehicle vehicle);
+
+	/**
+	 * @param accountId
+	 * @param user
+	 */
+	public void addAccountUser(String accountId, User user);
+
+	/**
+	 * @param accountId
+	 * @param phone
+	 */
+	public void addAccountPhone(String accountId, PhoneInfo phone);
+
+	/**
+	 * @param accountId
+	 * @param contact
+	 */
+	public void addAccountContact(String accountId, Contact contact);
+
+	/**
+	 * @param accountId
+	 * @param address
+	 */
+	public void addAccountAddress(String accountId, AddressInfo address);
 
 	/**
 	 * @author Max Fedorov

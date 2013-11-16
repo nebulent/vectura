@@ -4,9 +4,14 @@
 package com.nebulent.vectura.services.utils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import nebulent.schema.software.vectura._1.Ride;
+import nebulent.schema.software.vectura._1.Run;
+import nebulent.schema.software.vectura._1.VehicleTypeEnum;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -361,6 +366,82 @@ public final class DomainUtils {
 	}
 	
 	/**
+	 * @param dbRide
+	 * @return
+	 */
+	public static Ride toRide(com.nebulent.vectura.data.model.mongodb.Ride dbRide){
+		Ride ride = new Ride();
+		ride.setId(dbRide.getUuid());
+		ride.setAccountId(dbRide.getAccountUuid());
+		ride.setAdditionalRiders(dbRide.getAddnlRdrs());
+		ride.setAppointmentOn(toCalendar(dbRide.getApptOn()));
+		ride.setDateAsString(dbRide.getDate());
+		ride.setExtTripId(dbRide.getExtTripId());
+		ride.setMileage(dbRide.getMileage());
+		ride.setNotes(dbRide.getNotes());
+		ride.setPickupOn(toCalendar(dbRide.getPickupOn()));
+		ride.setPrice(dbRide.getPrice());
+		ride.setSpecRequirements(dbRide.getSpecReq());
+		ride.setStatus(dbRide.getStatus());
+		ride.setVehicleType(VehicleTypeEnum.fromValue(dbRide.getVehicleType()));
+		ride.setVersion(dbRide.getVersion());
+		ride.setPickupAddress(toAddress(dbRide.getPickupAddr()));
+		ride.setDropOffAddress(toAddress(dbRide.getDropoffAddr()));
+		return ride;
+	}
+	
+	/**
+	 * @param rideType
+	 * @return
+	 */
+	public static com.nebulent.vectura.data.model.mongodb.Ride toRide(Ride rideType){
+		com.nebulent.vectura.data.model.mongodb.Ride ride = new com.nebulent.vectura.data.model.mongodb.Ride();
+		if(StringUtils.isNotBlank(rideType.getId())){
+		ride.setUuid(rideType.getId());
+		}
+		ride.setAccountUuid(rideType.getAccountId());
+		ride.setAddnlRdrs(rideType.getAdditionalRiders());
+		ride.setApptOn(fromCalendar(rideType.getAppointmentOn()));
+		ride.setDate(rideType.getDateAsString());
+		ride.setExtTripId(rideType.getExtTripId());
+		ride.setMileage(rideType.getMileage());
+		ride.setNotes(rideType.getNotes());
+		ride.setPickupOn(fromCalendar(rideType.getPickupOn()));
+		ride.setPrice(rideType.getPrice());
+		ride.setSpecReq(rideType.getSpecRequirements());
+		ride.setStatus(rideType.getStatus());
+		ride.setVehicleType(rideType.getVehicleType().toString());
+		ride.setVersion(rideType.getVersion());
+		ride.setPickupAddr(toAddress(rideType.getPickupAddress()));
+		ride.setDropoffAddr(toAddress(rideType.getDropOffAddress()));
+		return ride;
+	}
+	
+	/**
+	 * @param dbLocations
+	 * @return
+	 */
+	public static List<nebulent.schema.software.vectura._1.Location> toLocations(List<Location> dbLocations){
+		List<nebulent.schema.software.vectura._1.Location> locations = new ArrayList<nebulent.schema.software.vectura._1.Location>(dbLocations.size());
+		for (Location dbLocation : dbLocations) {
+			locations.add(toLocation(dbLocation));
+		}
+		return locations;
+	}
+	
+	/**
+	 * @param dbRides
+	 * @return
+	 */
+	public static List<Ride> toRides(List<com.nebulent.vectura.data.model.mongodb.Ride> dbRides){
+		List<Ride> rides = new ArrayList<Ride>(dbRides.size());
+		for (com.nebulent.vectura.data.model.mongodb.Ride dbRide : dbRides) {
+			rides.add(toRide(dbRide));
+		}
+		return rides;
+	}
+	
+	/**
 	 * @param result
 	 * @return
 	 */
@@ -455,6 +536,54 @@ public final class DomainUtils {
 	}
 	
 	/**
+	 * @param run
+	 * @return
+	 */
+	public static Run toRun(com.nebulent.vectura.data.model.mongodb.Run dbRun) {
+		Run run = new Run();
+		run.setId(dbRun.getUuid());
+		run.setAccountId(dbRun.getAccountUuid());
+		run.setDriverId(dbRun.getDriverUuid());
+		run.setPickupOn(toCalendar(dbRun.getPickupOn()));
+		if(StringUtils.isNotBlank(dbRun.getLocUuid())){
+			nebulent.schema.software.vectura._1.Location loc = new nebulent.schema.software.vectura._1.Location();
+			loc.setId(dbRun.getLocUuid());
+			run.setStartLocation(loc);
+		}
+		if(StringUtils.isNotBlank(dbRun.getFinLocUuid())){
+			nebulent.schema.software.vectura._1.Location loc = new nebulent.schema.software.vectura._1.Location();
+			loc.setId(dbRun.getFinLocUuid());
+			run.setFinalLocation(loc);
+		}
+		run.setStatus(dbRun.getStatus());
+		run.setVersion(dbRun.getVersion());
+		return run;
+	}
+	
+	/**
+	 * @param run
+	 * @return
+	 */
+	public static com.nebulent.vectura.data.model.mongodb.Run toRun(Run runType) {
+		com.nebulent.vectura.data.model.mongodb.Run run = new com.nebulent.vectura.data.model.mongodb.Run();
+		if(StringUtils.isNotBlank(runType.getId())){
+			run.setUuid(runType.getId());
+		}
+		run.setAccountUuid(runType.getAccountId());
+		run.setDriverUuid(runType.getDriverId());
+		run.setPickupOn(fromCalendar(runType.getPickupOn()));
+		if(runType.getStartLocation() != null){
+			run.setLocUuid(runType.getStartLocation().getId());
+		}
+		if(runType.getFinalLocation() != null){
+			run.setFinLocUuid(runType.getFinalLocation().getId());
+		}
+		run.setStatus(runType.getStatus());
+		run.setVersion(runType.getVersion());
+		return run;
+	}
+	
+	/**
 	 * @param date
 	 * @return
 	 */
@@ -463,5 +592,14 @@ public final class DomainUtils {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return cal;
+	}
+	
+	/**
+	 * @param calendar
+	 * @return
+	 */
+	public static Date fromCalendar(Calendar calendar){
+		if(calendar == null) return null;
+		return calendar.getTime();
 	}
 }

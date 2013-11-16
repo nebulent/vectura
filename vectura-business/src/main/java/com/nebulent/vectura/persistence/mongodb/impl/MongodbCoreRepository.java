@@ -13,8 +13,15 @@ import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
+import com.nebulent.vectura.data.model.mongodb.AddressInfo;
+import com.nebulent.vectura.data.model.mongodb.Contact;
 import com.nebulent.vectura.data.model.mongodb.Location;
+import com.nebulent.vectura.data.model.mongodb.Patient;
+import com.nebulent.vectura.data.model.mongodb.PhoneInfo;
+import com.nebulent.vectura.data.model.mongodb.User;
+import com.nebulent.vectura.data.model.mongodb.Vehicle;
 import com.nebulent.vectura.persistence.mongodb.BaseMongodbRepository;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 import com.nebulent.vectura.persistence.repositories.mongodb.AccountRepository;
@@ -105,6 +112,54 @@ public class MongodbCoreRepository extends BaseMongodbRepository implements Core
 	 */
 	public void setRunRepository(RunRepository runRepository) {
 		this.runRepository = runRepository;
+	}
+	
+	@Override
+	public void addAccountAddress(String accountId, AddressInfo address){
+		Query query = Query.query(Criteria.where(ID).is(accountId));
+		Update update = new Update();
+		update.addToSet("addresses", address);
+		mongoTemplate.updateFirst(query, update, com.nebulent.vectura.data.model.mongodb.Account.class);
+	}
+	
+	@Override
+	public void addAccountContact(String accountId, Contact contact){
+		Query query = Query.query(Criteria.where(ID).is(accountId));
+		Update update = new Update();
+		update.addToSet("contacts", contact);
+		mongoTemplate.updateFirst(query, update, com.nebulent.vectura.data.model.mongodb.Account.class);
+	}
+	
+	@Override
+	public void addAccountPhone(String accountId, PhoneInfo phone){
+		Query query = Query.query(Criteria.where(ID).is(accountId));
+		Update update = new Update();
+		update.addToSet("phones", phone);
+		mongoTemplate.updateFirst(query, update, com.nebulent.vectura.data.model.mongodb.Account.class);
+	}
+	
+	@Override
+	public void addAccountUser(String accountId, User user){
+		Query query = Query.query(Criteria.where(ID).is(accountId));
+		Update update = new Update();
+		update.addToSet("users", user);
+		mongoTemplate.updateFirst(query, update, com.nebulent.vectura.data.model.mongodb.Account.class);
+	}
+	
+	@Override
+	public void addAccountVehicle(String accountId, Vehicle vehicle){
+		Query query = Query.query(Criteria.where(ID).is(accountId));
+		Update update = new Update();
+		update.addToSet("vehicles", vehicle);
+		mongoTemplate.updateFirst(query, update, com.nebulent.vectura.data.model.mongodb.Account.class);
+	}
+	
+	@Override
+	public void addAccountPatient(String accountId, Patient patient){
+		Query query = Query.query(Criteria.where(ID).is(accountId));
+		Update update = new Update();
+		update.addToSet("patients", patient);
+		mongoTemplate.updateFirst(query, update, com.nebulent.vectura.data.model.mongodb.Account.class);
 	}
 	
 	/* (non-Javadoc)

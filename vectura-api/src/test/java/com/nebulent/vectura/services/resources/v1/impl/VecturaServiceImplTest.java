@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import nebulent.schema.software.vectura._1.Account;
 import nebulent.schema.software.vectura._1.AddressInfo;
@@ -20,10 +21,12 @@ import nebulent.schema.software.vectura._1.NameValueType;
 import nebulent.schema.software.vectura._1.Patient;
 import nebulent.schema.software.vectura._1.PhoneInfo;
 import nebulent.schema.software.vectura._1.PhoneTypeEnum;
+import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.User;
 import nebulent.schema.software.vectura._1.Vehicle;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -163,7 +166,116 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 	}
 	
 	@Test
+	public void createRides(){
+		List<Ride> rides = new ArrayList<Ride>();
+		
+		AddressInfo ariaHealthAddress = new AddressInfo();
+		ariaHealthAddress.setAddressLine1("10800 Knights Rd");
+		ariaHealthAddress.setCity("Philadelphia");
+		ariaHealthAddress.setStateOrProvince("PA");
+		ariaHealthAddress.setZipCode("19114");
+		ariaHealthAddress.setCountryCode("US");
+		
+		Location ariaHealthLocation = new Location();
+		ariaHealthLocation.setAddress(ariaHealthAddress);
+		ariaHealthLocation.setName("Aria Health");
+		
+		Calendar appointmentTime = Calendar.getInstance();
+		appointmentTime.set(Calendar.HOUR_OF_DAY, 8);
+		String dateString = DateFormatUtils.format(appointmentTime, "MM/dd/yyyy");
+		
+		List<Location> locations = getLocations();
+		for (Location loc : locations) {
+			Ride ride = new Ride();
+			ride.setAdditionalRiders(0);
+			ride.setDateAsString(dateString);
+			ride.setAppointmentOn(appointmentTime);
+			ride.setExtTripId(UUID.randomUUID().toString());
+			ride.setMileage(1.0);
+			ride.setPickupAddress(loc.getAddress());
+			ride.setDropOffAddress(ariaHealthAddress);
+		}
+		
+		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, getHeaders());
+		for (Ride ride : rides) {
+			ride = accountResource.createAccountRide("526a9a88472874c5685cfd1e", ride);
+			if(ride != null){
+				try {
+					logger.debug("Location:" + jacksonJsonMapper.writeValueAsString(ride));
+				} catch (JsonGenerationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	@Test
 	public void createLocations(){
+		List<Location> locations = getLocations();
+		
+		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, getHeaders());
+		for (Location loc : locations) {
+			loc = accountResource.createAccountLocation("526a9a88472874c5685cfd1e", loc);
+			if(loc != null){
+				try {
+					logger.debug("Location:" + jacksonJsonMapper.writeValueAsString(loc));
+				} catch (JsonGenerationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void testFindAccountById(){
+		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, getHeaders());
+		Account account = accountResource.findAccount("526a9a88472874c5685cfd1e");//headers.get("Vectura-ApiKey"));
+		if(account != null){
+			try {
+				logger.debug("Go email account:" + jacksonJsonMapper.writeValueAsString(account));
+			} catch (JsonGenerationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		// Fail on purpose.
+		Map<String, String> headers = getHeaders();
+		headers.put("Vectura-Signature","ZZZFAILBpclYWPE52I/q04vbeSyregOhw=");
+		
+		accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
+		try {
+			account = accountResource.findAccount("526a9a88472874c5685cfd1e");//headers.get("Vectura-ApiKey"));
+		} catch (Exception e) {
+			Assert.assertTrue(true);
+		}
+		
+	}
+	
+	/**
+	 * @return
+	 */
+	protected List<Location> getLocations(){
 		List<Location> locations = new ArrayList<Location>();
 		
 		AddressInfo address = new AddressInfo();
@@ -334,65 +446,35 @@ public class VecturaServiceImplTest extends ResourceTestBase {
 		location.setName("Steve Bartlett");
 		locations.add(location);
 		
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("Vectura-Timestamp","2013-10-25T16:36:53.819Z");
-		headers.put("Vectura-ApiKey","Qow6ZxHcW53uND2VKy3j7ejn1mecsZGA");
-		headers.put("Vectura-Signature","yBpclYWPE52I/q04vbeSyregOhw=");
-		
-		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
-		for (Location loc : locations) {
-			loc = accountResource.createLocation("526a9a88472874c5685cfd1e", loc);
-			if(location != null){
-				try {
-					logger.debug("Location:" + jacksonJsonMapper.writeValueAsString(loc));
-				} catch (JsonGenerationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JsonMappingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+		return locations;
 	}
 	
-	@Test
-	public void testFindAccountById(){
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("Vectura-Timestamp","2013-10-25T16:36:53.819Z");
-		headers.put("Vectura-ApiKey","Qow6ZxHcW53uND2VKy3j7ejn1mecsZGA");
-		headers.put("Vectura-Signature","yBpclYWPE52I/q04vbeSyregOhw=");
+	/**
+	 * @return
+	 */
+	protected Location getOfficeLocation(){
+		AddressInfo address = new AddressInfo();
+		address.setAddressLine1("1714 Grant Ave");
+		address.setCity("Philadelphia");
+		address.setStateOrProvince("PA");
+		address.setZipCode("19115");
+		address.setCountryCode("US");
 		
-		AccountResource accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
-		Account account = accountResource.findAccount("526a9a88472874c5685cfd1e");//headers.get("Vectura-ApiKey"));
-		if(account != null){
-			try {
-				logger.debug("Go email account:" + jacksonJsonMapper.writeValueAsString(account));
-			} catch (JsonGenerationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		Location location = new Location();
+		location.setAddress(address);
+		location.setName("AllCityRental");
 		
-		// Fail on purpose.
-		headers.put("Vectura-Signature","ZZZFAILBpclYWPE52I/q04vbeSyregOhw=");
-		
-		accountResource = instantiateClient(v1Address, username, password, AccountResource.class, true, headers);
-		try {
-			account = accountResource.findAccount("526a9a88472874c5685cfd1e");//headers.get("Vectura-ApiKey"));
-		} catch (Exception e) {
-			Assert.assertTrue(true);
-		}
-		
+		return location;
 	}
 	
+	/**
+     * @return
+     */
+    protected Map<String, String> getHeaders(){
+	    Map<String, String> headers = new HashMap<String, String>();
+	    headers.put("Vectura-Timestamp","2013-10-25T16:36:53.819Z");
+		headers.put("Vectura-ApiKey","Qow6ZxHcW53uND2VKy3j7ejn1mecsZGA");
+		headers.put("Vectura-Signature","yBpclYWPE52I/q04vbeSyregOhw=");
+		return headers;
+    }
 }

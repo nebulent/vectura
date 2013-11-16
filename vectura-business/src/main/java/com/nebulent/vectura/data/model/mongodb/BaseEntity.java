@@ -33,7 +33,8 @@ public abstract class BaseEntity implements Serializable {
 
 	@Id
 	private String uuid;
-	private boolean disabled = false;
+	private String status;
+	private String version;
 	
 	// Change history data.
 	private String addedBy;
@@ -70,17 +71,31 @@ public abstract class BaseEntity implements Serializable {
 	}
 	
 	/**
-	 * @return
+	 * @return the status
 	 */
-	public boolean isDisabled() {
-		return disabled;
+	public String getStatus() {
+		return status;
 	}
 
 	/**
-	 * @param disabled
+	 * @param status the status to set
 	 */
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	/**

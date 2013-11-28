@@ -12,17 +12,17 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.DBObject;
-import com.nebulent.vectura.data.model.mongodb.AddressInfo;
-import com.nebulent.vectura.data.model.mongodb.Contact;
-import com.nebulent.vectura.data.model.mongodb.Location;
-import com.nebulent.vectura.data.model.mongodb.Patient;
-import com.nebulent.vectura.data.model.mongodb.PhoneInfo;
-import com.nebulent.vectura.data.model.mongodb.User;
-import com.nebulent.vectura.data.model.mongodb.Vehicle;
-import com.nebulent.vectura.persistence.repositories.mongodb.AccountRepository;
-import com.nebulent.vectura.persistence.repositories.mongodb.LocationRepository;
-import com.nebulent.vectura.persistence.repositories.mongodb.RideRepository;
-import com.nebulent.vectura.persistence.repositories.mongodb.RunRepository;
+import com.nebulent.vectura.data.model.mongodb.Place;
+import com.nebulent.vectura.data.model.mongodb.core.AddressInfo;
+import com.nebulent.vectura.data.model.mongodb.core.Contact;
+import com.nebulent.vectura.data.model.mongodb.core.Patient;
+import com.nebulent.vectura.data.model.mongodb.core.PhoneInfo;
+import com.nebulent.vectura.data.model.mongodb.core.User;
+import com.nebulent.vectura.data.model.mongodb.core.Vehicle;
+import com.nebulent.vectura.persistence.mongodb.repositories.AccountRepository;
+import com.nebulent.vectura.persistence.mongodb.repositories.PlaceRepository;
+import com.nebulent.vectura.persistence.mongodb.repositories.RideRepository;
+import com.nebulent.vectura.persistence.mongodb.repositories.RunRepository;
 
 /**
  * @author Max Fedorov
@@ -32,10 +32,7 @@ public interface CoreRepository {
 
 	
 	public static final String COLLECTION_ACCOUNTS = "accounts";
-	public static final String COLLECTION_VEHICLES = "vehicles";
-	public static final String COLLECTION_USERS = "users";
-	public static final String COLLECTION_LOCATIONS = "locations";
-	public static final String COLLECTION_PATIENTS = "patients";
+	public static final String COLLECTION_PLACES = "places";
 	public static final String COLLECTION_RIDES = "rides";
 	public static final String COLLECTION_RUNS = "runs";
 	
@@ -47,7 +44,7 @@ public interface CoreRepository {
 	/**
 	 * @return
 	 */
-	public LocationRepository getLocationRepository();
+	public PlaceRepository getPlaceRepository();
 	
 	/**
 	 * @return
@@ -64,7 +61,7 @@ public interface CoreRepository {
 	 * @param position
 	 * @return
 	 */
-	public GeoResults<Location> getLocationsByDistance(String accountUuid, double[] position);
+	public GeoResults<Place> getLocationsByDistance(String accountUuid, double[] position);
 
 	/**
 	 * @param accountId

@@ -6,7 +6,7 @@ package com.nebulent.vectura.services.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nebulent.vectura.data.model.mongodb.Location;
+import com.nebulent.vectura.data.model.mongodb.Place;
 
 /**
  * @author mfedorov
@@ -19,7 +19,7 @@ public final class GeoUtils {
 	 * @param end
 	 * @return
 	 */
-	public static double distance(Location start, Location end) {
+	public static double distance(Place start, Place end) {
 		return distance(start.getLocation()[1], end.getLocation()[1], start.getLocation()[0], end.getLocation()[0], 0D, 0D);
 	}
 	
@@ -29,9 +29,9 @@ public final class GeoUtils {
 	 * @param radius
 	 * @return
 	 */
-	public static List<Location> withinRadius(Location current, List<Location> locations, double radius) {
-	    List<Location> results = new ArrayList<Location>();
-	    for (Location loc : locations) {
+	public static List<Place> withinRadius(Place current, List<Place> locations, double radius) {
+	    List<Place> results = new ArrayList<Place>();
+	    for (Place loc : locations) {
 	        if (distance(current, loc) <= radius) {
 	            results.add(loc);
 	        }

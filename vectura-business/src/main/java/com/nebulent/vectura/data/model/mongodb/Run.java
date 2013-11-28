@@ -29,8 +29,8 @@ public class Run extends BaseEntity {
 	private String accountUuid;
 	private String driverUuid;
 	private Date pickupOn;
-	private String locUuid;
-	private String finLocUuid;
+	private String pickupPlaceUuid;
+	private String dropoffPlaceUuid;
 	
 	/**
 	 * @return the accountUuid
@@ -69,27 +69,27 @@ public class Run extends BaseEntity {
 		this.pickupOn = pickupOn;
 	}
 	/**
-	 * @return the locUuid
+	 * @return the pickupPlaceUuid
 	 */
-	public String getLocUuid() {
-		return locUuid;
+	public String getPickupPlaceUuid() {
+		return pickupPlaceUuid;
 	}
 	/**
-	 * @param locUuid the locUuid to set
+	 * @param pickupPlaceUuid the pickupPlaceUuid to set
 	 */
-	public void setLocUuid(String locUuid) {
-		this.locUuid = locUuid;
+	public void setPickupPlaceUuid(String pickupPlaceUuid) {
+		this.pickupPlaceUuid = pickupPlaceUuid;
 	}
 	/**
-	 * @return the finLocUuid
+	 * @return the dropoffPlaceUuid
 	 */
-	public String getFinLocUuid() {
-		return finLocUuid;
+	public String getDropoffPlaceUuid() {
+		return dropoffPlaceUuid;
 	}
 	/**
-	 * @param finLocUuid the finLocUuid to set
+	 * @param dropoffPlaceUuid the dropoffPlaceUuid to set
 	 */
-	public void setFinLocUuid(String finLocUuid) {
-		this.finLocUuid = finLocUuid;
+	public void setDropoffPlaceUuid(String dropoffPlaceUuid) {
+		this.dropoffPlaceUuid = dropoffPlaceUuid;
 	}
 }

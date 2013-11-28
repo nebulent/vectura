@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
 /**
  * @author mfedorov

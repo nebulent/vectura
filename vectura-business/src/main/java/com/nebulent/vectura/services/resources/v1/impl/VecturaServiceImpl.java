@@ -13,9 +13,9 @@ import javax.ws.rs.core.MediaType;
 import nebulent.schema.software.vectura._1.Account;
 import nebulent.schema.software.vectura._1.AddressInfo;
 import nebulent.schema.software.vectura._1.ContactType;
-import nebulent.schema.software.vectura._1.Location;
 import nebulent.schema.software.vectura._1.Patient;
 import nebulent.schema.software.vectura._1.PhoneInfo;
+import nebulent.schema.software.vectura._1.Place;
 import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.Run;
 import nebulent.schema.software.vectura._1.User;
@@ -26,14 +26,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.nebulent.vectura.data.model.mongodb.Contact;
+import com.nebulent.vectura.data.model.mongodb.core.Contact;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 import com.nebulent.vectura.services.MapService;
 import com.nebulent.vectura.services.resources.BadRequestException;
 import com.nebulent.vectura.services.resources.NotFoundException;
 import com.nebulent.vectura.services.resources.StatusResponse;
 import com.nebulent.vectura.services.resources.v1.AccountResource;
-import com.nebulent.vectura.services.resources.v1.LocationResource;
+import com.nebulent.vectura.services.resources.v1.PlaceResource;
 import com.nebulent.vectura.services.resources.v1.RideResource;
 import com.nebulent.vectura.services.resources.v1.RunResource;
 import com.nebulent.vectura.services.utils.DomainUtils;
@@ -42,10 +42,10 @@ import com.nebulent.vectura.services.utils.DomainUtils;
  * @author mfedorov
  *
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Consumes({MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_JSON})
 @Path("/")
-public class VecturaServiceImpl implements AccountResource, RunResource, LocationResource, RideResource{
+public class VecturaServiceImpl implements AccountResource, RunResource, PlaceResource, RideResource{
 
 	public static final int DEFAULT_SEARCH_PAGE_SIZE_100 = 100;
 
@@ -85,12 +85,12 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 	}
 
 	@Override
-	public Location findLocation(String id) {
+	public Place findLocation(String id) {
 		if(StringUtils.isBlank(id)){
 			throw new BadRequestException(new StatusResponse(false, "Location ID is a required field.", null));
 		}
 		
-		com.nebulent.vectura.data.model.mongodb.Location location = getMongoRepository().getLocationRepository().findOne(id);
+		com.nebulent.vectura.data.model.mongodb.Place location = getMongoRepository().getPlaceRepository().findOne(id);
 		if(location != null){
 			return DomainUtils.toLocation(location);
 		}
@@ -138,7 +138,7 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		com.nebulent.vectura.data.model.mongodb.AddressInfo dbAddress = DomainUtils.toAddress(address);
+		com.nebulent.vectura.data.model.mongodb.core.AddressInfo dbAddress = DomainUtils.toAddress(address);
 		getMongoRepository().addAccountAddress(accountId, dbAddress);
 		return DomainUtils.toAddress(dbAddress);
 	}
@@ -160,29 +160,35 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		com.nebulent.vectura.data.model.mongodb.PhoneInfo dbPhone = DomainUtils.toPhone(phone);
+		com.nebulent.vectura.data.model.mongodb.core.PhoneInfo dbPhone = DomainUtils.toPhone(phone);
 		getMongoRepository().addAccountPhone(accountId, dbPhone);
 		return DomainUtils.toPhone(dbPhone);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.services.resources.v1.AccountResource#addAccountVehicle(java.lang.String, nebulent.schema.software.vectura._1.Vehicle)
+	 */
 	@Override
 	public Vehicle addAccountVehicle(String accountId, Vehicle vehicle) {
 		if(StringUtils.isBlank(accountId)){
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		com.nebulent.vectura.data.model.mongodb.Vehicle dbVehicle = DomainUtils.toVehicle(vehicle);
+		com.nebulent.vectura.data.model.mongodb.core.Vehicle dbVehicle = DomainUtils.toVehicle(vehicle);
 		getMongoRepository().addAccountVehicle(accountId, dbVehicle);
 		return DomainUtils.toVehicleType(dbVehicle);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.services.resources.v1.AccountResource#addAccountUser(java.lang.String, nebulent.schema.software.vectura._1.User)
+	 */
 	@Override
 	public User addAccountUser(String accountId, User user) {
 		if(StringUtils.isBlank(accountId)){
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		com.nebulent.vectura.data.model.mongodb.User dbUser = DomainUtils.toUser(user);
+		com.nebulent.vectura.data.model.mongodb.core.User dbUser = DomainUtils.toUser(user);
 		getMongoRepository().addAccountUser(accountId, dbUser);
 		return DomainUtils.toUser(dbUser);
 	}
@@ -193,23 +199,26 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		com.nebulent.vectura.data.model.mongodb.Patient dbPatient = DomainUtils.toPatient(patient);
+		com.nebulent.vectura.data.model.mongodb.core.Patient dbPatient = DomainUtils.toPatient(patient);
 		getMongoRepository().addAccountPatient(accountId, dbPatient);
 		return DomainUtils.toPatient(dbPatient);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.services.resources.v1.AccountResource#createAccountPlace(java.lang.String, nebulent.schema.software.vectura._1.Place)
+	 */
 	@Override
-	public Location createAccountLocation(String accountId, Location locationType) {
+	public Place createAccountPlace(String accountId, Place locationType) {
 		if(StringUtils.isBlank(accountId)){
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
 		locationType.setAccountId(accountId);
-		com.nebulent.vectura.data.model.mongodb.Location location = DomainUtils.toLocation(locationType);
+		com.nebulent.vectura.data.model.mongodb.Place location = DomainUtils.toLocation(locationType);
 		location.setAccountUuid(accountId);
 		
 		AddressInfo addressType = mapService.getLocationByAddress(location.getAddress().toString());
-		com.nebulent.vectura.data.model.mongodb.AddressInfo addressInfo = DomainUtils.toAddress(addressType);
+		com.nebulent.vectura.data.model.mongodb.core.AddressInfo addressInfo = DomainUtils.toAddress(addressType);
 		if(logger.isDebugEnabled()){
 			logger.debug("Adding location with address:" + addressInfo);
 		}
@@ -217,19 +226,22 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 			location.setAddress(addressInfo);
 			location.getAddress().hash();
 			location.setLocation(location.getAddress().getLocation());
-			location = getMongoRepository().getLocationRepository().save(location);
+			location = getMongoRepository().getPlaceRepository().save(location);
 		}
 		
 		return DomainUtils.toLocation(location);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.services.resources.v1.AccountResource#searchAccountPlaces(java.lang.String, java.lang.String)
+	 */
 	@Override
-	public List<Location> searchAccountLocations(String accountId, String addressHash) {
+	public List<Place> searchAccountPlaces(String accountId, String addressHash) {
 		if(StringUtils.isBlank(accountId)){
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		List<com.nebulent.vectura.data.model.mongodb.Location> locations = getMongoRepository().getLocationRepository().findByAccountUuidAddressHash(accountId, addressHash);
+		List<com.nebulent.vectura.data.model.mongodb.Place> locations = getMongoRepository().getPlaceRepository().findByAccountUuidAndAddressHash(accountId, addressHash);
 		return DomainUtils.toLocations(locations);
 	}
 
@@ -260,7 +272,7 @@ public class VecturaServiceImpl implements AccountResource, RunResource, Locatio
 			throw new BadRequestException(new StatusResponse(false, "Date is a required field.", null));
 		}
 		
-		List<com.nebulent.vectura.data.model.mongodb.Ride> rides = getMongoRepository().getRideRepository().findByAccountUuidDateOrderByApptOnAsc(accountId, dateAsString);
+		List<com.nebulent.vectura.data.model.mongodb.Ride> rides = getMongoRepository().getRideRepository().findByAccountUuidAndRideDateAsStringOrderByApptOnAsc(accountId, dateAsString);
 		return DomainUtils.toRides(rides);
 	}
 

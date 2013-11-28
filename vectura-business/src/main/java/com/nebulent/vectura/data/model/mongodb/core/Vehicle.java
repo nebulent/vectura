@@ -1,19 +1,17 @@
 /**
  * 
  */
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
+
+import java.io.Serializable;
 
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 
 /**
  * @author mfedorov
  *
  */
-@Document(collection=CoreRepository.COLLECTION_VEHICLES)
-public class Vehicle extends BaseEntity {
+public class Vehicle implements Serializable {
 
 	/**
 	 * 
@@ -25,7 +23,7 @@ public class Vehicle extends BaseEntity {
 	@Indexed
 	private String accountUuid;
 	
-	private VehicleTypeEnum type = VehicleTypeEnum.VAN;
+	private String type = VehicleTypeEnum.VAN.toString();
 	private int seats = 4;
 	private int year;
 	private String make;
@@ -49,14 +47,14 @@ public class Vehicle extends BaseEntity {
 	/**
 	 * @return the type
 	 */
-	public VehicleTypeEnum getType() {
+	public String getType() {
 		return type;
 	}
 
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(VehicleTypeEnum type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

@@ -1,33 +1,35 @@
 /**
  * 
  */
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
+
+import java.io.Serializable;
 
 
 /**
  * @author mfedorov
  *
  */
-public class PhoneInfo extends BaseEntity{
+public class PhoneInfo implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8929673447858828232L;
 	
-	private PhoneTypeEnum type = PhoneTypeEnum.WORK;
+	private String type = PhoneTypeEnum.WORK.toString();
 	private String value;
 	
 	/**
 	 * @return the type
 	 */
-	public PhoneTypeEnum getType() {
+	public String getType() {
 		return type;
 	}
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(PhoneTypeEnum type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	/**

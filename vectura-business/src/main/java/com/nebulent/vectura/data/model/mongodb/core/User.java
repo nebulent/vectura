@@ -1,20 +1,16 @@
 /**
  * 
  */
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
 import java.util.Date;
 
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 
 /**
  * @author mfedorov
  *
  */
-@Document(collection=CoreRepository.COLLECTION_USERS)
 public class User extends Contact{
 
 	/**
@@ -30,6 +26,8 @@ public class User extends Contact{
 	private String pwdHash;
 	private Date lastLogin;
 	private int loginAttempts;
+	
+	private String vin;
 	
 	/**
 	 * @return the username
@@ -78,5 +76,29 @@ public class User extends Contact{
 	 */
 	public void setLoginAttempts(int loginAttempts) {
 		this.loginAttempts = loginAttempts;
+	}
+	/**
+	 * @return the accountUuid
+	 */
+	public String getAccountUuid() {
+		return accountUuid;
+	}
+	/**
+	 * @param accountUuid the accountUuid to set
+	 */
+	public void setAccountUuid(String accountUuid) {
+		this.accountUuid = accountUuid;
+	}
+	/**
+	 * @return the vin
+	 */
+	public String getVin() {
+		return vin;
+	}
+	/**
+	 * @param vin the vin to set
+	 */
+	public void setVin(String vin) {
+		this.vin = vin;
 	}
 }

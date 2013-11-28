@@ -18,15 +18,13 @@ import org.apache.commons.lang.StringUtils;
 import com.google.code.geocoder.model.GeocoderAddressComponent;
 import com.google.code.geocoder.model.GeocoderResult;
 import com.nebulent.vectura.data.model.mongodb.Account;
-import com.nebulent.vectura.data.model.mongodb.AddressInfo;
-import com.nebulent.vectura.data.model.mongodb.Contact;
-import com.nebulent.vectura.data.model.mongodb.ContactTypeEnum;
-import com.nebulent.vectura.data.model.mongodb.Location;
-import com.nebulent.vectura.data.model.mongodb.Patient;
-import com.nebulent.vectura.data.model.mongodb.PhoneInfo;
-import com.nebulent.vectura.data.model.mongodb.PhoneTypeEnum;
-import com.nebulent.vectura.data.model.mongodb.User;
-import com.nebulent.vectura.data.model.mongodb.Vehicle;
+import com.nebulent.vectura.data.model.mongodb.Place;
+import com.nebulent.vectura.data.model.mongodb.core.AddressInfo;
+import com.nebulent.vectura.data.model.mongodb.core.Contact;
+import com.nebulent.vectura.data.model.mongodb.core.Patient;
+import com.nebulent.vectura.data.model.mongodb.core.PhoneInfo;
+import com.nebulent.vectura.data.model.mongodb.core.User;
+import com.nebulent.vectura.data.model.mongodb.core.Vehicle;
 
 /**
  * @author mfedorov
@@ -150,7 +148,7 @@ public final class DomainUtils {
 		contact.setEmail(contactType.getEmail());
 		contact.setfName(contactType.getFirstName());
 		contact.setlName(contactType.getLastName());
-		contact.setType(ContactTypeEnum.fromString(contactType.getType()));
+		contact.setType(contactType.getType());
 		
 		for(nebulent.schema.software.vectura._1.PhoneInfo phoneInfo: contactType.getPhones()){
 			contact.getPhoneInfos().add(toPhone(phoneInfo));
@@ -172,7 +170,7 @@ public final class DomainUtils {
 		contact.setEmail(contactType.getEmail());
 		contact.setFirstName(contactType.getfName());
 		contact.setLastName(contactType.getlName());
-		contact.setType(contactType.getType().getCode());
+		contact.setType(contactType.getType());
 		
 		for(PhoneInfo phoneInfo: contactType.getPhoneInfos()){
 			contact.getPhones().add(toPhone(phoneInfo));
@@ -232,7 +230,7 @@ public final class DomainUtils {
 	 */
 	public static PhoneInfo toPhone(nebulent.schema.software.vectura._1.PhoneInfo phoneType){
 		PhoneInfo phone = new PhoneInfo();
-		phone.setType(PhoneTypeEnum.fromString(phoneType.getType()));
+		phone.setType(phoneType.getType());
 		phone.setValue(phoneType.getValue());
 		return phone;
 	}
@@ -243,7 +241,7 @@ public final class DomainUtils {
 	 */
 	public static nebulent.schema.software.vectura._1.PhoneInfo toPhone(PhoneInfo phoneType){
 		nebulent.schema.software.vectura._1.PhoneInfo phone = new nebulent.schema.software.vectura._1.PhoneInfo();
-		phone.setType(phoneType.getType().getCode());
+		phone.setType(phoneType.getType());
 		phone.setValue(phoneType.getValue());
 		return phone;
 	}
@@ -258,7 +256,7 @@ public final class DomainUtils {
 		patient.setEmail(patientType.getEmail());
 		patient.setfName(patientType.getFirstName());
 		patient.setlName(patientType.getLastName());
-		patient.setType(ContactTypeEnum.fromString(patientType.getType()));
+		patient.setType(patientType.getType());
 		
 		for(nebulent.schema.software.vectura._1.PhoneInfo phoneInfo: patientType.getPhones()){
 			patient.getPhoneInfos().add(toPhone(phoneInfo));
@@ -281,7 +279,7 @@ public final class DomainUtils {
 		patient.setEmail(patientType.getEmail());
 		patient.setFirstName(patientType.getfName());
 		patient.setLastName(patientType.getlName());
-		patient.setType(patientType.getType().getCode());
+		patient.setType(patientType.getType());
 		
 		for(PhoneInfo phoneInfo: patientType.getPhoneInfos()){
 			patient.getPhones().add(toPhone(phoneInfo));
@@ -298,8 +296,8 @@ public final class DomainUtils {
 	 * @param locationType
 	 * @return
 	 */
-	public static Location toLocation(nebulent.schema.software.vectura._1.Location locationType){
-		Location location = new Location();
+	public static Place toLocation(nebulent.schema.software.vectura._1.Place locationType){
+		Place location = new Place();
 		location.setName(locationType.getName());
 		location.setAddress(toAddress(locationType.getAddress()));
 		return location;
@@ -309,8 +307,8 @@ public final class DomainUtils {
 	 * @param locationType
 	 * @return
 	 */
-	public static nebulent.schema.software.vectura._1.Location toLocation(Location locationType){
-		nebulent.schema.software.vectura._1.Location location = new nebulent.schema.software.vectura._1.Location();
+	public static nebulent.schema.software.vectura._1.Place toLocation(Place locationType){
+		nebulent.schema.software.vectura._1.Place location = new nebulent.schema.software.vectura._1.Place();
 		location.setName(locationType.getName());
 		location.setAddress(toAddress(locationType.getAddress()));
 		return location;
@@ -321,23 +319,24 @@ public final class DomainUtils {
 	 * @return
 	 */
 	public static User toUser(nebulent.schema.software.vectura._1.User userType){
-		User patient = new User();
-		patient.setUsername(userType.getUsername());
-		patient.setPwdHash(new String(userType.getPasswordHash()));
-		patient.setEmail(userType.getEmail());
-		patient.setfName(userType.getFirstName());
-		patient.setlName(userType.getLastName());
-		patient.setType(ContactTypeEnum.fromString(userType.getType()));
+		User user = new User();
+		user.setUsername(userType.getUsername());
+		user.setPwdHash(new String(userType.getPasswordHash()));
+		user.setEmail(userType.getEmail());
+		user.setfName(userType.getFirstName());
+		user.setlName(userType.getLastName());
+		user.setType(userType.getType());
+		user.setVin(userType.getVin());
 		
 		for(nebulent.schema.software.vectura._1.PhoneInfo phoneInfo: userType.getPhones()){
-			patient.getPhoneInfos().add(toPhone(phoneInfo));
+			user.getPhoneInfos().add(toPhone(phoneInfo));
 		}
 		
 		for(nebulent.schema.software.vectura._1.AddressInfo addressInfo: userType.getAddresses()){
-			patient.getAddressInfos().add(toAddress(addressInfo));
+			user.getAddressInfos().add(toAddress(addressInfo));
 		}
 		
-		return patient;
+		return user;
 	}
 	
 	/**
@@ -352,7 +351,8 @@ public final class DomainUtils {
 		user.setEmail(userType.getEmail());
 		user.setFirstName(userType.getfName());
 		user.setLastName(userType.getlName());
-		user.setType(userType.getType().getCode());
+		user.setType(userType.getType());
+		user.setVin(userType.getVin());
 		
 		for(PhoneInfo phoneInfo: userType.getPhoneInfos()){
 			user.getPhones().add(toPhone(phoneInfo));
@@ -375,7 +375,7 @@ public final class DomainUtils {
 		ride.setAccountId(dbRide.getAccountUuid());
 		ride.setAdditionalRiders(dbRide.getAddnlRdrs());
 		ride.setAppointmentOn(toCalendar(dbRide.getApptOn()));
-		ride.setDateAsString(dbRide.getDate());
+		ride.setDateAsString(dbRide.getRideDateAsString());
 		ride.setExtTripId(dbRide.getExtTripId());
 		ride.setMileage(dbRide.getMileage());
 		ride.setNotes(dbRide.getNotes());
@@ -402,7 +402,7 @@ public final class DomainUtils {
 		ride.setAccountUuid(rideType.getAccountId());
 		ride.setAddnlRdrs(rideType.getAdditionalRiders());
 		ride.setApptOn(fromCalendar(rideType.getAppointmentOn()));
-		ride.setDate(rideType.getDateAsString());
+		ride.setRideDateAsString(rideType.getDateAsString());
 		ride.setExtTripId(rideType.getExtTripId());
 		ride.setMileage(rideType.getMileage());
 		ride.setNotes(rideType.getNotes());
@@ -421,9 +421,9 @@ public final class DomainUtils {
 	 * @param dbLocations
 	 * @return
 	 */
-	public static List<nebulent.schema.software.vectura._1.Location> toLocations(List<Location> dbLocations){
-		List<nebulent.schema.software.vectura._1.Location> locations = new ArrayList<nebulent.schema.software.vectura._1.Location>(dbLocations.size());
-		for (Location dbLocation : dbLocations) {
+	public static List<nebulent.schema.software.vectura._1.Place> toLocations(List<Place> dbLocations){
+		List<nebulent.schema.software.vectura._1.Place> locations = new ArrayList<nebulent.schema.software.vectura._1.Place>(dbLocations.size());
+		for (Place dbLocation : dbLocations) {
 			locations.add(toLocation(dbLocation));
 		}
 		return locations;
@@ -545,15 +545,15 @@ public final class DomainUtils {
 		run.setAccountId(dbRun.getAccountUuid());
 		run.setDriverId(dbRun.getDriverUuid());
 		run.setPickupOn(toCalendar(dbRun.getPickupOn()));
-		if(StringUtils.isNotBlank(dbRun.getLocUuid())){
-			nebulent.schema.software.vectura._1.Location loc = new nebulent.schema.software.vectura._1.Location();
-			loc.setId(dbRun.getLocUuid());
-			run.setStartLocation(loc);
+		if(StringUtils.isNotBlank(dbRun.getPickupPlaceUuid())){
+			nebulent.schema.software.vectura._1.Place loc = new nebulent.schema.software.vectura._1.Place();
+			loc.setId(dbRun.getPickupPlaceUuid());
+			run.setPickupPlace(loc);
 		}
-		if(StringUtils.isNotBlank(dbRun.getFinLocUuid())){
-			nebulent.schema.software.vectura._1.Location loc = new nebulent.schema.software.vectura._1.Location();
-			loc.setId(dbRun.getFinLocUuid());
-			run.setFinalLocation(loc);
+		if(StringUtils.isNotBlank(dbRun.getDropoffPlaceUuid())){
+			nebulent.schema.software.vectura._1.Place loc = new nebulent.schema.software.vectura._1.Place();
+			loc.setId(dbRun.getDropoffPlaceUuid());
+			run.setDropoffPlace(loc);
 		}
 		run.setStatus(dbRun.getStatus());
 		run.setVersion(dbRun.getVersion());
@@ -572,11 +572,11 @@ public final class DomainUtils {
 		run.setAccountUuid(runType.getAccountId());
 		run.setDriverUuid(runType.getDriverId());
 		run.setPickupOn(fromCalendar(runType.getPickupOn()));
-		if(runType.getStartLocation() != null){
-			run.setLocUuid(runType.getStartLocation().getId());
+		if(runType.getPickupPlace() != null){
+			run.setPickupPlaceUuid(runType.getPickupPlace().getId());
 		}
-		if(runType.getFinalLocation() != null){
-			run.setFinLocUuid(runType.getFinalLocation().getId());
+		if(runType.getDropoffPlace() != null){
+			run.setDropoffPlaceUuid(runType.getDropoffPlace().getId());
 		}
 		run.setStatus(runType.getStatus());
 		run.setVersion(runType.getVersion());

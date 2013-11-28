@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.nebulent.vectura.data.model.mongodb.core.AddressInfo;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 
 /**
@@ -14,7 +15,7 @@ import com.nebulent.vectura.persistence.mongodb.CoreRepository;
  */
 @Document(collection=CoreRepository.COLLECTION_RIDES)
 @CompoundIndexes({
-    @CompoundIndex(name = "dailylist_idx", def = "{'accountUuid': 1, 'date': 1, 'apptOn': 1}")
+    @CompoundIndex(name = "dailylist_idx", def = "{'accountUuid': 1, 'rideDateAsString': 1, 'apptOn': 1}")
 })
 public class Ride extends BaseEntity {
 
@@ -24,7 +25,7 @@ public class Ride extends BaseEntity {
 	private static final long serialVersionUID = -2941734474504285146L;
 
 	private String accountUuid;
-	private String date;
+	private String rideDateAsString;
 	
 	private String extTripId;
 	private Date apptOn;
@@ -54,14 +55,26 @@ public class Ride extends BaseEntity {
 	/**
 	 * @return the date
 	 */
-	public String getDate() {
-		return date;
+	public String getRideOn() {
+		return getRideDateAsString();
+	}
+	/**
+	 * @return the date
+	 */
+	public String getRideDateAsString() {
+		return rideDateAsString;
 	}
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(String date) {
-		this.date = date;
+	public void setRideOn(String date) {
+		setRideDateAsString(date);
+	}
+	/**
+	 * @param date the date to set
+	 */
+	public void setRideDateAsString(String date) {
+		this.rideDateAsString = date;
 	}
 	/**
 	 * @return the extTripId

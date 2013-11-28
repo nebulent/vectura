@@ -1,4 +1,4 @@
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
 public enum RunTypeEnum {
 

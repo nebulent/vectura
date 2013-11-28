@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.nebulent.vectura.persistence.repositories.mongodb;
+package com.nebulent.vectura.persistence.mongodb.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

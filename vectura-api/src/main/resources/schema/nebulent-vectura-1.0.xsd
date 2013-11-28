@@ -9,7 +9,7 @@
 	<xs:element name="run" type="RunType" />
 	<xs:element name="ride" type="RideType" />
 	<xs:element name="user" type="UserType" />
-	<xs:element name="location" type="LocationType" />
+	<xs:element name="place" type="PlaceType" />
 	<xs:element name="phoneInfo" type="PhoneInfoType" />
 	<xs:element name="addressInfo" type="AddressInfoType" />
 	<xs:element name="contactInfo" type="ContactType" />
@@ -69,6 +69,13 @@ Enumerations
 		<xs:restriction base="xs:string">
 			<xs:enumeration id="PU" value="PICKUP"/>
 			<xs:enumeration id="DO" value="DROPOFF"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration id="USR" value="USER"/>
+			<xs:enumeration id="ADM" value="ADMIN"/>
+			<xs:enumeration id="DRVR" value="DRIVER"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<!-- 
@@ -159,15 +166,24 @@ Enumerations
 				</xs:sequence>
 				<xs:attribute name="username" type="xs:string" use="required"/>
 				<xs:attribute name="accountId" type="xs:string" use="required"/>
+				<xs:attribute name="vin" type="xs:string" use="optional"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	
+	<!--xs:complexType name="DriverType">
+		<xs:complexContent>
+			<xs:extension base="UserType">
+				<xs:attribute name="vin" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType-->
 	
 	<xs:complexType name="PatientType">
 		<xs:complexContent>
 			<xs:extension base="ContactType">
 				<xs:sequence>
-					<xs:element name="locations" type="LocationType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="place" type="PlaceType" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 				<xs:attribute name="ssn" type="xs:string" use="required"/>
 				<xs:attribute name="accountId" type="xs:string" use="required"/>
@@ -176,7 +192,7 @@ Enumerations
 		</xs:complexContent>
 	</xs:complexType>
 	
-	<xs:complexType name="LocationType">
+	<xs:complexType name="PlaceType">
 		<xs:complexContent>
 			<xs:extension base="AuditType">
 				<xs:sequence>
@@ -194,8 +210,8 @@ Enumerations
 			<xs:extension base="AuditType">
 				<xs:sequence>
 					<xs:element name="pickupOn" type="xs:dateTime" minOccurs="1"/>
-					<xs:element name="startLocation" type="LocationType" minOccurs="1" maxOccurs="1"/>
-					<xs:element name="finalLocation" type="LocationType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="pickupPlace" type="PlaceType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="dropoffPlace" type="PlaceType" minOccurs="1" maxOccurs="1"/>
 				</xs:sequence>
 				<xs:attribute name="id" type="xs:string" use="optional"/>
 				<xs:attribute name="accountId" type="xs:string" use="required"/>
@@ -242,7 +258,7 @@ Enumerations
 					<xs:element name="vehicles" type="VehicleType" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="users" type="UserType" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="patients" type="PatientType" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="locationIds" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="placeIds" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="settings" type="NameValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 				<xs:attribute name="id" type="xs:string" use="optional"/>

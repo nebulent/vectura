@@ -12,7 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import nebulent.schema.software.vectura._1.Location;
+import nebulent.schema.software.vectura._1.Place;
 import nebulent.schema.software.vectura._1.Run;
 
 import org.apache.cxf.jaxrs.model.wadl.Description;
@@ -28,26 +28,26 @@ import com.wordnik.swagger.annotations.Api;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/")
-@Api(value="/locations", description="Location API")
-public interface LocationResource {
+@Api(value="/places", description="Places API")
+public interface PlaceResource {
 	
 	@Descriptions({
-        @Description(value = "Gets location by location id", target = DocTarget.METHOD),
-        @Description(value = "Returns found location", target = DocTarget.RETURN),
+        @Description(value = "Gets place by id", target = DocTarget.METHOD),
+        @Description(value = "Returns found place", target = DocTarget.RETURN),
         @Description(value = "String id", target = DocTarget.REQUEST),
-        @Description(value = "GET http://{host}/api/locations/{id}", target = DocTarget.RESOURCE)
+        @Description(value = "GET http://{host}/api/places/{id}", target = DocTarget.RESOURCE)
     })
 	@GET
-	@Path("locations/{id}")
-	Location findLocation(@Description("String id") @PathParam("id") String id);
+	@Path("places/{id}")
+	Place findLocation(@Description("String id") @PathParam("id") String id);
 	
 	@Descriptions({
-        @Description(value = "Gets runs by location id", target = DocTarget.METHOD),
+        @Description(value = "Gets runs by place id", target = DocTarget.METHOD),
         @Description(value = "Returns found runs", target = DocTarget.RETURN),
         @Description(value = "String id", target = DocTarget.REQUEST),
-        @Description(value = "GET http://{host}/api/locations/{id}/runs", target = DocTarget.RESOURCE)
+        @Description(value = "GET http://{host}/api/places/{id}/runs", target = DocTarget.RESOURCE)
     })
 	@GET
-	@Path("locations/{id}/runs")
+	@Path("places/{id}/runs")
 	List<Run> findRunsByLocation(@Description("String id") @PathParam("id") String id);
 }

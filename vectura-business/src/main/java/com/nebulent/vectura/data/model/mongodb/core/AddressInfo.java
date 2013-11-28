@@ -1,26 +1,30 @@
 /**
  * 
  */
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author mfedorov
  *
  */
-public class AddressInfo extends BaseEntity {
+@Document
+public class AddressInfo implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3795727939168566836L;
 	
-	private AddressTypeEnum type;
+	private String type = AddressTypeEnum.MAILING.toString();
 	private String addressLine1;
 	private String addressLine2;
 	private String addressLine3;
@@ -29,6 +33,7 @@ public class AddressInfo extends BaseEntity {
 	private String zipCode;
 	private String countryCode = "US";
 	private String name;
+	@Indexed(unique=true)
 	private String hash;
 	
 	@Transient
@@ -37,13 +42,13 @@ public class AddressInfo extends BaseEntity {
 	/**
 	 * @return the type
 	 */
-	public AddressTypeEnum getType() {
+	public String getType() {
 		return type;
 	}
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(AddressTypeEnum type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	/**
@@ -135,6 +140,12 @@ public class AddressInfo extends BaseEntity {
 	 */
 	public String getHash() {
 		return hash;
+	}
+	/**
+	 * @param hash the hash to set
+	 */
+	public void setHash(String hash) {
+		this.hash = hash;
 	}
 	/**
 	 * @return the location

@@ -1,10 +1,9 @@
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
-public enum VehicleTypeEnum {
+public enum AddressTypeEnum {
 
-	CAR("CAR", "Car"),
-	VAN("VAN", "Van"),
-	PAR("PAR", "Par");
+	MAILING("MAIL", "Mailing"),
+	BILLING("BILL", "Billing");
 	
 	private String code;
 	private String description;
@@ -14,7 +13,7 @@ public enum VehicleTypeEnum {
 	 * @param description
 	 * @param sort
 	 */
-	private VehicleTypeEnum(String code, String description) {
+	private AddressTypeEnum(String code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -22,7 +21,7 @@ public enum VehicleTypeEnum {
 	/**
 	 * @param code
 	 */
-	private VehicleTypeEnum(String code){
+	private AddressTypeEnum(String code){
 		this.code = code;
 	}
 
@@ -58,9 +57,9 @@ public enum VehicleTypeEnum {
 	 * @param code
 	 * @return
 	 */
-	public static VehicleTypeEnum fromString(String code) {
+	public static AddressTypeEnum fromString(String code) {
 		if (code != null) {
-			for (VehicleTypeEnum e : VehicleTypeEnum.values()) {
+			for (AddressTypeEnum e : AddressTypeEnum.values()) {
 				if (code.equalsIgnoreCase(e.getCode())) {
 					return e;
 				}

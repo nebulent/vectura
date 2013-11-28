@@ -11,13 +11,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author Max Fedorov
  *
  */
-@Document
 public abstract class BaseEntity implements Serializable {
 	
 	/**
@@ -25,12 +23,6 @@ public abstract class BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = -2898027558386059700L;
 	
-	/**
-	 * 
-	 */
-	public BaseEntity() {
-	}
-
 	@Id
 	private String uuid;
 	private String status;
@@ -41,6 +33,12 @@ public abstract class BaseEntity implements Serializable {
 	private Date addedOn;
 	private String updatedBy;
 	private Date updatedOn;
+	
+	/**
+	 * 
+	 */
+	public BaseEntity() {
+	}
 	
 	/**
 	 * @param uuid

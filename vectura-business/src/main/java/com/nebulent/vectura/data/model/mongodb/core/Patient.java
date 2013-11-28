@@ -1,22 +1,18 @@
 /**
  * 
  */
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 
 
 /**
  * @author mfedorov
  *
  */
-@Document(collection=CoreRepository.COLLECTION_PATIENTS)
 public class Patient extends Contact {
 
 	/**

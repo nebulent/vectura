@@ -15,19 +15,19 @@ import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import com.nebulent.vectura.data.model.mongodb.AddressInfo;
-import com.nebulent.vectura.data.model.mongodb.Contact;
-import com.nebulent.vectura.data.model.mongodb.Location;
-import com.nebulent.vectura.data.model.mongodb.Patient;
-import com.nebulent.vectura.data.model.mongodb.PhoneInfo;
-import com.nebulent.vectura.data.model.mongodb.User;
-import com.nebulent.vectura.data.model.mongodb.Vehicle;
+import com.nebulent.vectura.data.model.mongodb.Place;
+import com.nebulent.vectura.data.model.mongodb.core.AddressInfo;
+import com.nebulent.vectura.data.model.mongodb.core.Contact;
+import com.nebulent.vectura.data.model.mongodb.core.Patient;
+import com.nebulent.vectura.data.model.mongodb.core.PhoneInfo;
+import com.nebulent.vectura.data.model.mongodb.core.User;
+import com.nebulent.vectura.data.model.mongodb.core.Vehicle;
 import com.nebulent.vectura.persistence.mongodb.BaseMongodbRepository;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
-import com.nebulent.vectura.persistence.repositories.mongodb.AccountRepository;
-import com.nebulent.vectura.persistence.repositories.mongodb.LocationRepository;
-import com.nebulent.vectura.persistence.repositories.mongodb.RideRepository;
-import com.nebulent.vectura.persistence.repositories.mongodb.RunRepository;
+import com.nebulent.vectura.persistence.mongodb.repositories.AccountRepository;
+import com.nebulent.vectura.persistence.mongodb.repositories.PlaceRepository;
+import com.nebulent.vectura.persistence.mongodb.repositories.RideRepository;
+import com.nebulent.vectura.persistence.mongodb.repositories.RunRepository;
 
 /**
  * @author Max Fedorov
@@ -44,7 +44,7 @@ public class MongodbCoreRepository extends BaseMongodbRepository implements Core
 	@Autowired
 	private AccountRepository accountRepository;
 	@Autowired
-	private LocationRepository locationRepository;
+	private PlaceRepository placeRepository;
 	@Autowired
 	private RideRepository rideRepository;
 	@Autowired
@@ -73,17 +73,17 @@ public class MongodbCoreRepository extends BaseMongodbRepository implements Core
 	}
 
 	/**
-	 * @return the locationRepository
+	 * @return the placeRepository
 	 */
-	public LocationRepository getLocationRepository() {
-		return locationRepository;
+	public PlaceRepository getPlaceRepository() {
+		return placeRepository;
 	}
 
 	/**
-	 * @param locationRepository the locationRepository to set
+	 * @param placeRepository the placeRepository to set
 	 */
-	public void setLocationRepository(LocationRepository locationRepository) {
-		this.locationRepository = locationRepository;
+	public void setPlaceRepository(PlaceRepository placeRepository) {
+		this.placeRepository = placeRepository;
 	}
 
 	/**
@@ -166,11 +166,11 @@ public class MongodbCoreRepository extends BaseMongodbRepository implements Core
 	 * @see com.nebulent.vectura.persistence.mongodb.CoreRepository#getLocationsByDistance(java.lang.String, double[])
 	 */
 	@Override
-	public GeoResults<Location> getLocationsByDistance(String accountUuid, double[] position){
+	public GeoResults<Place> getLocationsByDistance(String accountUuid, double[] position){
 		Point location = new Point(position[0], position[1]);
 		Query query = Query.query(Criteria.where(FIELD_ACCOUNT_UUID).is(accountUuid));
 		NearQuery nearQuery = NearQuery.near(location).maxDistance(new Distance(100, Metrics.MILES)).query(query);
-		GeoResults<Location> results = mongoTemplate.geoNear(nearQuery, Location.class);
+		GeoResults<Place> results = mongoTemplate.geoNear(nearQuery, Place.class);
 		return results;
 	}
 }

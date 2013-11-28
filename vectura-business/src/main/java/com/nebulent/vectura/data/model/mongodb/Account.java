@@ -9,9 +9,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.nebulent.vectura.data.model.mongodb.core.AddressInfo;
+import com.nebulent.vectura.data.model.mongodb.core.Contact;
+import com.nebulent.vectura.data.model.mongodb.core.NameValuePair;
+import com.nebulent.vectura.data.model.mongodb.core.Patient;
+import com.nebulent.vectura.data.model.mongodb.core.PhoneInfo;
+import com.nebulent.vectura.data.model.mongodb.core.User;
+import com.nebulent.vectura.data.model.mongodb.core.UserTypeEnum;
+import com.nebulent.vectura.data.model.mongodb.core.Vehicle;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 
 /**
@@ -19,6 +29,12 @@ import com.nebulent.vectura.persistence.mongodb.CoreRepository;
  *
  */
 @Document(collection=CoreRepository.COLLECTION_ACCOUNTS)
+@CompoundIndexes({
+    @CompoundIndex(name = "vehicle_vin_idx", def = "{'vehicles.vin': 1}"),
+    @CompoundIndex(name = "address_hash_idx", def = "{'addresses.hash': 1}"),
+    @CompoundIndex(name = "patients_ssn_idx", def = "{'patients.ssn': 1}"),
+    @CompoundIndex(name = "users_username_idx", def = "{'users.username': 1}")
+})
 public class Account extends BaseEntity {
 
 	/**
@@ -36,7 +52,7 @@ public class Account extends BaseEntity {
 	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
 	private List<User> users = new ArrayList<User>();
 	private List<Patient> patients = new ArrayList<Patient>();
-	private List<String> locUuids = new ArrayList<String>();
+	private List<String> placeUuids = new ArrayList<String>();
 	private Set<NameValuePair> settings = new HashSet<NameValuePair>();
 	
 	@Indexed (unique=true)
@@ -135,6 +151,18 @@ public class Account extends BaseEntity {
 		return users;
 	}
 	/**
+	 * @return the drivers
+	 */
+	public List<User> getDrivers() {
+		List<User> drivers = new ArrayList<User>();
+		for (User user : getUsers()) {
+			if(UserTypeEnum.DRIVER.toString().equalsIgnoreCase(user.getType())){
+				drivers.add(user);
+			}
+		}
+		return drivers;
+	}
+	/**
 	 * @return the patients
 	 */
 	public List<Patient> getPatients() {
@@ -143,8 +171,8 @@ public class Account extends BaseEntity {
 	/**
 	 * @return the locUuids
 	 */
-	public List<String> getLocUuids() {
-		return locUuids;
+	public List<String> getPlaceUuids() {
+		return placeUuids;
 	}
 	/**
 	 * @return the settings

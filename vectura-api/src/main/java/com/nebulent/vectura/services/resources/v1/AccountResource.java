@@ -14,9 +14,9 @@ import javax.ws.rs.core.MediaType;
 import nebulent.schema.software.vectura._1.Account;
 import nebulent.schema.software.vectura._1.AddressInfo;
 import nebulent.schema.software.vectura._1.ContactType;
-import nebulent.schema.software.vectura._1.Location;
 import nebulent.schema.software.vectura._1.Patient;
 import nebulent.schema.software.vectura._1.PhoneInfo;
+import nebulent.schema.software.vectura._1.Place;
 import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.User;
 import nebulent.schema.software.vectura._1.Vehicle;
@@ -103,6 +103,18 @@ public interface AccountResource {
     		@Description("String accountId") @PathParam("accountId") String accountId,
     		@Description("User user") User user);
     
+    /*@Descriptions({
+        @Description(value = "Add driver to account", target = DocTarget.METHOD),
+        @Description(value = "Returns added driver", target = DocTarget.RETURN),
+        @Description(value = "Driver driver", target = DocTarget.REQUEST),
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/drivers", target = DocTarget.RESOURCE)
+    })
+    @POST
+    @Path("accounts/{accountId}/drivers")
+    Driver addAccountDriver(
+    		@Description("String accountId") @PathParam("accountId") String accountId,
+    		@Description("User user") Driver driver);
+    */
     @Descriptions({
         @Description(value = "Add patient to account", target = DocTarget.METHOD),
         @Description(value = "Returns added patient", target = DocTarget.RETURN),
@@ -116,16 +128,16 @@ public interface AccountResource {
     		@Description("Patient patient") Patient patient);
     
     @Descriptions({
-        @Description(value = "Add locations to account", target = DocTarget.METHOD),
-        @Description(value = "Returns added locations", target = DocTarget.RETURN),
-        @Description(value = "Location locations", target = DocTarget.REQUEST),
-        @Description(value = "POST http://{host}/api/accounts/{accountId}/locations", target = DocTarget.RESOURCE)
+        @Description(value = "Add place to account", target = DocTarget.METHOD),
+        @Description(value = "Returns added place", target = DocTarget.RETURN),
+        @Description(value = "Place place", target = DocTarget.REQUEST),
+        @Description(value = "POST http://{host}/api/accounts/{accountId}/places", target = DocTarget.RESOURCE)
     })
     @POST
-    @Path("accounts/{accountId}/locations")
-    Location createAccountLocation(
+    @Path("accounts/{accountId}/places")
+    Place createAccountPlace(
     		@Description("String accountId") @PathParam("accountId") String accountId,
-    		@Description("Location locations") Location location);
+    		@Description("Place place") Place place);
     
     @Descriptions({
         @Description(value = "Add ride for account", target = DocTarget.METHOD),
@@ -147,8 +159,8 @@ public interface AccountResource {
         @Description(value = "GET http://{host}/api/accounts/{accountId}/locations?addressHash={addressHash}", target = DocTarget.RESOURCE)
     })
 	@GET
-	@Path("accounts/{accountId}/locations")
-	List<Location> searchAccountLocations(
+	@Path("accounts/{accountId}/places")
+	List<Place> searchAccountPlaces(
 			@Description("String accountId") @PathParam("accountId") String accountId,
 			@Description("String addressHash") @QueryParam("addressHash") String addressHash);
     

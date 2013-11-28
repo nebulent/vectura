@@ -22,8 +22,8 @@ import com.nebulent.vectura.services.utils.DomainUtils;
  * @author mfedorov
  *
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Consumes({MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_JSON})
 @Path("/")
 public class VecturaAdminServiceImpl implements AdminResource {
 
@@ -51,7 +51,7 @@ public class VecturaAdminServiceImpl implements AdminResource {
 	 */
 	@Override
 	public Account updateAccount(String accountId, Account account) {
-		mongoRepository.getAccountRepository().save(DomainUtils.toAccount(account));
+		getMongoRepository().getAccountRepository().save(DomainUtils.toAccount(account));
 		return account;
 	}
 
@@ -60,7 +60,7 @@ public class VecturaAdminServiceImpl implements AdminResource {
 	 */
 	@Override
 	public Account createAccount(Account account) {
-		com.nebulent.vectura.data.model.mongodb.Account savedAccount = mongoRepository.getAccountRepository().save(DomainUtils.toAccount(account));
+		com.nebulent.vectura.data.model.mongodb.Account savedAccount = getMongoRepository().getAccountRepository().save(DomainUtils.toAccount(account));
 		return DomainUtils.toAccount(savedAccount);
 	}
 
@@ -69,7 +69,7 @@ public class VecturaAdminServiceImpl implements AdminResource {
 	 */
 	@Override
 	public Account removeAccount(String accountId) {
-		mongoRepository.getAccountRepository().delete(accountId);
+		getMongoRepository().getAccountRepository().delete(accountId);
 		return null;
 	}
 

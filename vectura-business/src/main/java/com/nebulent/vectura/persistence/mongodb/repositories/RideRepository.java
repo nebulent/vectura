@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.nebulent.vectura.persistence.repositories.mongodb;
+package com.nebulent.vectura.persistence.mongodb.repositories;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ public interface RideRepository extends MongoRepository<Ride, String>{
 
 	/**
 	 * @param accountUuid
-	 * @param date
+	 * @param rideDateAsString
 	 * @return
 	 */
-	public List<Ride> findByAccountUuidDateOrderByApptOnAsc(String accountUuid, String date);
+	public List<Ride> findByAccountUuidAndRideDateAsStringOrderByApptOnAsc(String accountUuid, String rideDateAsString);
 	
 }

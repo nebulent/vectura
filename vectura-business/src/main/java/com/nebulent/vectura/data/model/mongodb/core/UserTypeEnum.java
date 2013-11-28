@@ -1,10 +1,10 @@
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
-public enum ContactTypeEnum {
+public enum UserTypeEnum {
 
-	PRIMARY("PRI", "Primary"),
-	SECONDARY("SEC", "Secondary"),
-	BILLING("BILL", "Billing");
+	USER("USR", "User"),
+	ADMIN("ADM", "Admin"),
+	DRIVER("DRVR", "Driver");
 	
 	private String code;
 	private String description;
@@ -14,7 +14,7 @@ public enum ContactTypeEnum {
 	 * @param description
 	 * @param sort
 	 */
-	private ContactTypeEnum(String code, String description) {
+	private UserTypeEnum(String code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -22,7 +22,7 @@ public enum ContactTypeEnum {
 	/**
 	 * @param code
 	 */
-	private ContactTypeEnum(String code){
+	private UserTypeEnum(String code){
 		this.code = code;
 	}
 
@@ -58,9 +58,9 @@ public enum ContactTypeEnum {
 	 * @param code
 	 * @return
 	 */
-	public static ContactTypeEnum fromString(String code) {
+	public static UserTypeEnum fromString(String code) {
 		if (code != null) {
-			for (ContactTypeEnum e : ContactTypeEnum.values()) {
+			for (UserTypeEnum e : UserTypeEnum.values()) {
 				if (code.equalsIgnoreCase(e.getCode())) {
 					return e;
 				}

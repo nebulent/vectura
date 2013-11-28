@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import com.nebulent.vectura.data.model.mongodb.Account;
-import com.nebulent.vectura.data.model.mongodb.Location;
+import com.nebulent.vectura.data.model.mongodb.Place;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 import com.nebulent.vectura.services.SignatureService;
 
@@ -50,8 +50,8 @@ public class MongodbCoreRepositoryTest {
 	
 	@Test
 	public void testGetLocationsByDistance(){
-		GeoResults<Location> results = mongoRepository.getLocationsByDistance("526a9a88472874c5685cfd1e", new double[]{-75.0555768, 40.2160837});
-		for (GeoResult<Location> geoResult : results) {
+		GeoResults<Place> results = mongoRepository.getLocationsByDistance("526a9a88472874c5685cfd1e", new double[]{-75.0555768, 40.2160837});
+		for (GeoResult<Place> geoResult : results) {
 			System.out.println(geoResult.getDistance().getValue() + "-->" + geoResult.getContent().getAddress().toString());
 		}
 	}

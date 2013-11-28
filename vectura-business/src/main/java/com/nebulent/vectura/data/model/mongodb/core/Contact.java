@@ -1,8 +1,9 @@
 /**
  * 
  */
-package com.nebulent.vectura.data.model.mongodb;
+package com.nebulent.vectura.data.model.mongodb.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +11,14 @@ import java.util.List;
  * @author mfedorov
  *
  */
-public class Contact extends BaseEntity{
+public class Contact implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8315861775376416810L;
 	
-	private ContactTypeEnum type = ContactTypeEnum.PRIMARY;
+	private String type = ContactTypeEnum.PRIMARY.toString();
 	private String fName;
 	private String lName;
 	private String email;
@@ -27,13 +28,13 @@ public class Contact extends BaseEntity{
 	/**
 	 * @return the type
 	 */
-	public ContactTypeEnum getType() {
+	public String getType() {
 		return type;
 	}
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(ContactTypeEnum type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	/**

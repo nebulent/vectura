@@ -9,18 +9,19 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.nebulent.vectura.data.model.mongodb.core.AddressInfo;
 import com.nebulent.vectura.persistence.mongodb.CoreRepository;
 
 /**
  * @author mfedorov
  *
  */
-@Document(collection=CoreRepository.COLLECTION_LOCATIONS)
+@Document(collection=CoreRepository.COLLECTION_PLACES)
 @CompoundIndexes({
     @CompoundIndex(name = "searchByZip_idx", def = "{'accountUuid': 1, 'name': 1, 'address.zipCode': 1}"),
-    @CompoundIndex(name = "searchByHash_idx", def = "{'name': 1, 'address.hash': 1}")
+    @CompoundIndex(name = "searchByHash_idx", def = "{'accountUuid': 1, 'address.hash': 1}")
 })
-public class Location extends BaseEntity{
+public class Place extends BaseEntity{
 
 	/**
 	 * 

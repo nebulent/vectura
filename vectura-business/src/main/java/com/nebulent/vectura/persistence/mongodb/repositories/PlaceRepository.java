@@ -20,5 +20,11 @@ public interface PlaceRepository extends MongoRepository<Place, String>{
 	 * @param addressHash
 	 * @return
 	 */
-	public List<Place> findByAccountUuidAndAddressHash(String accountUuid, String addressHash);
+	public Place findByAccountUuidAndAddressHash(String accountUuid, String addressHash);
+	
+	/**
+	 * @param accountUuid
+	 * @return
+	 */
+	public List<Place> findByAccountUuid(String accountUuid);
 }

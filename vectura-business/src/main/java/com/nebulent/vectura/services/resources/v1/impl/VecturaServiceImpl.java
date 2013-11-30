@@ -208,25 +208,39 @@ public class VecturaServiceImpl implements AccountResource, RunResource, PlaceRe
 	 * @see com.nebulent.vectura.services.resources.v1.AccountResource#createAccountPlace(java.lang.String, nebulent.schema.software.vectura._1.Place)
 	 */
 	@Override
-	public Place createAccountPlace(String accountId, Place locationType) {
+	public Place createAccountPlace(String accountId, Place placeType) {
 		if(StringUtils.isBlank(accountId)){
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		locationType.setAccountId(accountId);
-		com.nebulent.vectura.data.model.mongodb.Place location = DomainUtils.toLocation(locationType);
+		placeType.setAccountId(accountId);
+		com.nebulent.vectura.data.model.mongodb.Place location = DomainUtils.toLocation(placeType);
 		location.setAccountUuid(accountId);
 		
-		AddressInfo addressType = mapService.getLocationByAddress(location.getAddress().toString());
-		com.nebulent.vectura.data.model.mongodb.core.AddressInfo addressInfo = DomainUtils.toAddress(addressType);
-		if(logger.isDebugEnabled()){
-			logger.debug("Adding location with address:" + addressInfo);
-		}
-		if(addressInfo != null && StringUtils.isNotBlank(addressInfo.getAddressLine1())){
-			location.setAddress(addressInfo);
-			location.getAddress().hash();
-			location.setLocation(location.getAddress().getLocation());
-			location = getMongoRepository().getPlaceRepository().save(location);
+		String addressHash = DomainUtils.getDigest(location.getAddress().toString());
+		if(StringUtils.isNotBlank(addressHash)){
+			System.out.println("Trying to find by address hash:" + addressHash + " and " + location.getAddress().toString());
+			com.nebulent.vectura.data.model.mongodb.Place placeByHash = getMongoRepository().getPlaceRepository().findByAccountUuidAndAddressHash(accountId, addressHash);
+			if(placeByHash == null){
+				AddressInfo addressType = mapService.getLocationByAddress(location.getAddress().toString());
+				if(addressType != null){
+					com.nebulent.vectura.data.model.mongodb.core.AddressInfo addressInfo = DomainUtils.toAddress(addressType);
+					if(logger.isDebugEnabled()){
+						logger.debug("Adding location with address:" + addressInfo);
+					}
+					if(addressInfo != null && StringUtils.isNotBlank(addressInfo.getAddressLine1())){
+						location.setAddress(addressInfo);
+						location.getAddress().hash();
+						location.setLocation(location.getAddress().getLocation());
+						location = getMongoRepository().getPlaceRepository().save(location);
+					}
+				}
+			}
+			else{
+				System.out.println("Found by address hash:" + addressHash + " and " + placeByHash.toString());
+				
+				location = placeByHash;
+			}
 		}
 		
 		return DomainUtils.toLocation(location);
@@ -241,7 +255,7 @@ public class VecturaServiceImpl implements AccountResource, RunResource, PlaceRe
 			throw new BadRequestException(new StatusResponse(false, "Account ID is a required field.", null));
 		}
 		
-		List<com.nebulent.vectura.data.model.mongodb.Place> locations = getMongoRepository().getPlaceRepository().findByAccountUuidAndAddressHash(accountId, addressHash);
+		List<com.nebulent.vectura.data.model.mongodb.Place> locations = getMongoRepository().getPlaceRepository().findByAccountUuid(accountId);
 		return DomainUtils.toLocations(locations);
 	}
 
@@ -257,7 +271,25 @@ public class VecturaServiceImpl implements AccountResource, RunResource, PlaceRe
 		ride.setAccountId(accountId);
 		com.nebulent.vectura.data.model.mongodb.Ride mongoRide = DomainUtils.toRide(ride);
 		mongoRide = getMongoRepository().getRideRepository().save(mongoRide);
-		return DomainUtils.toRide(mongoRide);
+		ride = DomainUtils.toRide(mongoRide);
+		
+		// Create pick-up location.
+		Place place = new Place();
+		place.setAddress(ride.getDropOffAddress());
+		Place dropoffPlace = createAccountPlace(accountId, place);
+		if(dropoffPlace != null){
+			ride.setDropOffAddress(dropoffPlace.getAddress());
+		}
+		
+		// Create drop-off location.
+		place = new Place();
+		place.setAddress(ride.getPickupAddress());
+		Place pickupPlace = createAccountPlace(accountId, place);
+		if(pickupPlace != null){
+			ride.setPickupAddress(pickupPlace.getAddress());
+		}
+		
+		return ride;
 	}
 
 	/* (non-Javadoc)

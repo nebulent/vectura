@@ -6,7 +6,6 @@ package com.nebulent.vectura.services.resources.v1.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +17,11 @@ import nebulent.schema.software.vectura._1.Account;
 import nebulent.schema.software.vectura._1.AddressInfo;
 import nebulent.schema.software.vectura._1.ContactType;
 import nebulent.schema.software.vectura._1.ContactTypeEnum;
-import nebulent.schema.software.vectura._1.Place;
 import nebulent.schema.software.vectura._1.NameValueType;
 import nebulent.schema.software.vectura._1.Patient;
 import nebulent.schema.software.vectura._1.PhoneInfo;
 import nebulent.schema.software.vectura._1.PhoneTypeEnum;
+import nebulent.schema.software.vectura._1.Place;
 import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.User;
 import nebulent.schema.software.vectura._1.UserTypeEnum;
@@ -71,8 +70,8 @@ public class VecturaServiceImplTest{
 		Account account = new Account();
 		account.setEin(RandomStringUtils.randomNumeric(9));
 		account.setName(RandomStringUtils.randomAlphabetic(10));
-		account.setApiKey(RandomStringUtils.randomAlphanumeric(32));
-		account.setSecretKey(RandomStringUtils.randomAlphanumeric(32).getBytes());
+		account.setApiKey("Qow6ZxHcW53uND2VKy3j7ejn1mecsZGA");
+		account.setSecretKey("YqufEj83AVaXsccbd49CQ5O2yPymlXlM".getBytes());
 		
 		AddressInfo address = new AddressInfo();
 		address.setAddressLine1("55 Kasi Circle");
@@ -200,15 +199,17 @@ public class VecturaServiceImplTest{
 		
 		Account createAccount = accountResource.createAccount(account);
 		
-		createPlaces(createAccount.getId(), getPlaces());
+		List<Place> places = getPlaces();
 		
-		createRides(createAccount.getId());
+		//places = createPlaces(createAccount.getId(), places);
+		
+		createRides(createAccount.getId(), places);
 	}
 	
 	/**
 	 * @param accountId
 	 */
-	public void createRides(String accountId){
+	public void createRides(String accountId, List<Place> places){
 		List<Ride> rides = new ArrayList<Ride>();
 		
 		AddressInfo hospital1 = new AddressInfo();
@@ -226,7 +227,7 @@ public class VecturaServiceImplTest{
 		AddressInfo hospital2 = new AddressInfo();
 		hospital2.setName("Holy Redeemer Hospital");
 		hospital2.setAddressLine1("1648 Huntingdon Pike");
-		hospital2.setCity("Meadowbrook");
+		hospital2.setCity("Jenkintown");
 		hospital2.setStateOrProvince("PA");
 		hospital2.setZipCode("19046");
 		hospital2.setCountryCode("US");
@@ -235,17 +236,23 @@ public class VecturaServiceImplTest{
 		hospitalPlace2.setAddress(hospital2);
 		hospitalPlace2.setName("Holy Redeemer Hospital");
 		
-		createPlaces(accountId, Arrays.asList(new Place[] {hospitalPlace1,hospitalPlace2}));
+		List<Place> hospitals = new ArrayList<Place>();
+		hospitals.add(hospitalPlace1);
+		hospitals.add(hospitalPlace2);
+		
+		//createPlaces(accountId, hospitals); //Arrays.asList(new Place[] {hospitalPlace1,hospitalPlace2}));
 		
 		Calendar appointmentTime = Calendar.getInstance();
 		appointmentTime.set(Calendar.DAY_OF_MONTH, appointmentTime.get(Calendar.DAY_OF_MONTH) + 1);
 		appointmentTime.set(Calendar.HOUR_OF_DAY, 8);
 		String dateString = DateFormatUtils.format(appointmentTime, "MM/dd/yyyy");
 		
-		int hospitalRandom = random.nextInt(2);
-		List<Place> locations = getPlaces();
-		for (Place loc : locations) {
+		for (Place loc : places) {
+			int hospitalRandom = random.nextInt(2);
+			
 			Ride ride = new Ride();
+			rides.add(ride);
+			ride.setPrice(1.00);
 			ride.setAdditionalRiders(0);
 			ride.setDateAsString(dateString);
 			ride.setAppointmentOn(getRandomAppointmentTime(appointmentTime));
@@ -258,7 +265,7 @@ public class VecturaServiceImplTest{
 			else{
 				ride.setDropOffAddress(hospital2);
 			}
-			System.out.println(ride.getAppointmentOn().getTime() + "----" + ride.getPickupAddress().getName() + "=>" + ride.getDropOffAddress().getAddressLine1());
+			System.out.println(ride.getAppointmentOn().getTime() + "----" + ride.getPickupAddress().getAddressLine1() + "=>" + ride.getDropOffAddress().getAddressLine1());
 		}
 		
 		AccountResource accountResource = instantiateClient(v1Address, AccountResource.class, getHeaders());
@@ -285,11 +292,14 @@ public class VecturaServiceImplTest{
 	 * @param accountId
 	 * @param locations
 	 */
-	private void createPlaces(String accountId, List<Place> locations){
+	protected List<Place> createPlaces(String accountId, List<Place> locations){
+		List<Place> places = new ArrayList<Place>(locations.size());
+		
 		AccountResource accountResource = instantiateClient(v1Address, AccountResource.class, getHeaders());
 		for (Place loc : locations) {
 			loc = accountResource.createAccountPlace(accountId, loc);
 			if(loc != null){
+				places.add(loc);
 				try {
 					logger.debug("Place:" + jacksonJsonMapper.writeValueAsString(loc));
 				} catch (JsonGenerationException e) {
@@ -304,6 +314,7 @@ public class VecturaServiceImplTest{
 				}
 			}
 		}
+		return places;
 	}
 	
 	@Test
@@ -465,15 +476,15 @@ public class VecturaServiceImplTest{
 		places.add(place);
 		
 		address = new AddressInfo();
-		address.setAddressLine1("1040 Mill Creek Dr.");
-		address.setCity("Feasterville");
+		address.setAddressLine1("2020 County Line Rd.");
+		address.setCity("Huntingdon Valley");
 		address.setStateOrProvince("PA");
-		address.setZipCode("19053");
+		address.setZipCode("19006");
 		address.setCountryCode("US");
 		
 		place = new Place();
 		place.setAddress(address);
-		place.setName("B&R Family Fitness");
+		place.setName("LA Fitness");
 		places.add(place);
 		
 		address = new AddressInfo();

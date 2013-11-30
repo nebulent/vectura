@@ -4,6 +4,8 @@
 package com.nebulent.vectura.services.utils;
 
 import java.math.BigDecimal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,8 +13,8 @@ import java.util.List;
 
 import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.Run;
-import nebulent.schema.software.vectura._1.VehicleTypeEnum;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 
 import com.google.code.geocoder.model.GeocoderAddressComponent;
@@ -32,6 +34,21 @@ import com.nebulent.vectura.data.model.mongodb.core.Vehicle;
  */
 public final class DomainUtils {
 
+	/**
+	 * @param value
+	 * @return
+	 */
+	public static String getDigest(String value){
+		if(StringUtils.isBlank(value)) return null;
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest.update(value.getBytes());
+			return new String(new Base64().encode(messageDigest.digest()));
+		} catch (NoSuchAlgorithmException e) {
+			return String.valueOf(value.hashCode());
+		}
+	}
+	
 	/**
 	 * @param accountType
 	 * @return
@@ -75,6 +92,7 @@ public final class DomainUtils {
 	 */
 	public static nebulent.schema.software.vectura._1.Account toAccount(Account accountType){
 		nebulent.schema.software.vectura._1.Account account = new nebulent.schema.software.vectura._1.Account();
+		account.setId(accountType.getUuid());
 		account.setEin(accountType.getEin());
 		account.setName(accountType.getName());
 		account.setApiKey(accountType.getApiKey());
@@ -309,6 +327,7 @@ public final class DomainUtils {
 	 */
 	public static nebulent.schema.software.vectura._1.Place toLocation(Place locationType){
 		nebulent.schema.software.vectura._1.Place location = new nebulent.schema.software.vectura._1.Place();
+		location.setId(locationType.getUuid());
 		location.setName(locationType.getName());
 		location.setAddress(toAddress(locationType.getAddress()));
 		return location;
@@ -383,7 +402,7 @@ public final class DomainUtils {
 		ride.setPrice(dbRide.getPrice());
 		ride.setSpecRequirements(dbRide.getSpecReq());
 		ride.setStatus(dbRide.getStatus());
-		ride.setVehicleType(VehicleTypeEnum.fromValue(dbRide.getVehicleType()));
+		ride.setVehicleType(dbRide.getVehicleType());
 		ride.setVersion(dbRide.getVersion());
 		ride.setPickupAddress(toAddress(dbRide.getPickupAddr()));
 		ride.setDropOffAddress(toAddress(dbRide.getDropoffAddr()));
@@ -397,7 +416,7 @@ public final class DomainUtils {
 	public static com.nebulent.vectura.data.model.mongodb.Ride toRide(Ride rideType){
 		com.nebulent.vectura.data.model.mongodb.Ride ride = new com.nebulent.vectura.data.model.mongodb.Ride();
 		if(StringUtils.isNotBlank(rideType.getId())){
-		ride.setUuid(rideType.getId());
+			ride.setUuid(rideType.getId());
 		}
 		ride.setAccountUuid(rideType.getAccountId());
 		ride.setAddnlRdrs(rideType.getAdditionalRiders());
@@ -410,7 +429,7 @@ public final class DomainUtils {
 		ride.setPrice(rideType.getPrice());
 		ride.setSpecReq(rideType.getSpecRequirements());
 		ride.setStatus(rideType.getStatus());
-		ride.setVehicleType(rideType.getVehicleType().toString());
+		ride.setVehicleType(rideType.getVehicleType());
 		ride.setVersion(rideType.getVersion());
 		ride.setPickupAddr(toAddress(rideType.getPickupAddress()));
 		ride.setDropoffAddr(toAddress(rideType.getDropOffAddress()));

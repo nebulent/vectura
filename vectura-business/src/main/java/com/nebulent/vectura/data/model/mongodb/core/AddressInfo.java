@@ -4,13 +4,13 @@
 package com.nebulent.vectura.data.model.mongodb.core;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.nebulent.vectura.services.utils.DomainUtils;
 
 /**
  * @author mfedorov
@@ -176,14 +176,9 @@ public class AddressInfo implements Serializable {
 	 * 
 	 */
 	public void hash(){
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			messageDigest.update(toString().getBytes());
-			hash = new String(messageDigest.digest());
-		} catch (NoSuchAlgorithmException e) {
-			hash = String.valueOf(toString().hashCode());
-		}
+		hash = DomainUtils.getDigest(toString());
 	}
+	
 	/* (non-Javadoc)
 	 * @see com.nebulent.vectura.data.model.mongodb.BaseEntity#toString()
 	 */

@@ -70,7 +70,8 @@
     <!-- ********************************************** JSON ************************************************************* -->
 	
     <json:json-to-object-transformer name="json_jsonToAccountTransformer" returnClass="nebulent.schema.software.vectura._1.Account"/>
-        					
+    <json:object-to-json-transformer name="json_accountToJsonTransformer" sourceClass="nebulent.schema.software.vectura._1.Account"/>
+    
 	<!-- ********************************************** FLOWS ************************************************************* -->
 	
 	<byte-array-to-string-transformer name="byteArrayToString" />

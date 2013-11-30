@@ -96,37 +96,45 @@ Enumerations
 			<xs:element name="stateOrProvince" type="xs:string" minOccurs="1"/>
 			<xs:element name="zipCode" type="xs:string" minOccurs="0"/>
 			<xs:element name="countryCode" type="xs:string" minOccurs="0" default="US"/>
+			<xs:element name="lat" type="gpx:latitudeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The latitude of the point. Decimal degrees, WGS84 datum.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lon" type="gpx:longitudeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The latitude of the point. Decimal degrees, WGS84 datum.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="lat" type="gpx:latitudeType" use="optional">
-			<xs:annotation>
-				<xs:documentation>
-					The latitude of the point. Decimal degrees, WGS84 datum.
-				</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="lon" type="gpx:longitudeType" use="optional">
-			<xs:annotation>
-				<xs:documentation>
-					The latitude of the point. Decimal degrees, WGS84 datum.
-				</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
+		
 	</xs:complexType>
 	
 	<xs:complexType name="NameValueType">
-		<xs:attribute name="name" type="xs:string" use="required"/>
-		<xs:attribute name="value" type="xs:string" use="required"/>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1"/>
+		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="PhoneInfoType">
-		<xs:attribute name="type" type="xs:string" use="required"/>
-		<xs:attribute name="value" type="xs:string" use="required"/>
+		<xs:sequence>
+			<xs:element name="type" type="xs:string" minOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1"/>
+		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="VehicleType">
 		<xs:complexContent>
 			<xs:extension base="AuditType">
 				<xs:sequence>
+					<xs:element name="vin" type="xs:string" minOccurs="0"/>
+					<xs:element name="accountId" type="xs:string" minOccurs="0"/>
+				
 					<xs:element name="type" type="xs:string" minOccurs="1"/>
 					<xs:element name="seats" type="xs:int" minOccurs="1"/>
 					<xs:element name="year" type="xs:int" minOccurs="1"/>
@@ -134,8 +142,6 @@ Enumerations
 					<xs:element name="model" type="xs:string" minOccurs="1"/>
 					<xs:element name="color" type="xs:string" minOccurs="1"/>
 				</xs:sequence>
-				<xs:attribute name="vin" type="xs:string" use="optional"/>
-				<xs:attribute name="accountId" type="xs:string" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -160,13 +166,14 @@ Enumerations
 		<xs:complexContent>
 			<xs:extension base="ContactType">
 				<xs:sequence>
+					<xs:element name="username" type="xs:string" minOccurs="0"/>
+					<xs:element name="accountId" type="xs:string" minOccurs="0"/>
+					<xs:element name="vin" type="xs:string" minOccurs="0"/>
+				
 					<xs:element name="passwordHash" type="xs:base64Binary" minOccurs="1"/>
 					<xs:element name="lastLogin" type="xs:dateTime" minOccurs="0"/>
 					<xs:element name="loginAttempts" type="xs:int" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="username" type="xs:string" use="required"/>
-				<xs:attribute name="accountId" type="xs:string" use="required"/>
-				<xs:attribute name="vin" type="xs:string" use="optional"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -174,7 +181,7 @@ Enumerations
 	<!--xs:complexType name="DriverType">
 		<xs:complexContent>
 			<xs:extension base="UserType">
-				<xs:attribute name="vin" type="xs:string" use="required"/>
+				<xs:element name="vin" type="xs:string" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType-->
@@ -183,11 +190,11 @@ Enumerations
 		<xs:complexContent>
 			<xs:extension base="ContactType">
 				<xs:sequence>
+					<xs:element name="ssn" type="xs:string" minOccurs="0"/>
+					<xs:element name="accountId" type="xs:string" minOccurs="0"/>
+					<xs:element name="patientId" type="xs:string" minOccurs="0"/>
 					<xs:element name="place" type="PlaceType" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
-				<xs:attribute name="ssn" type="xs:string" use="required"/>
-				<xs:attribute name="accountId" type="xs:string" use="required"/>
-				<xs:attribute name="patientId" type="xs:string" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -196,11 +203,11 @@ Enumerations
 		<xs:complexContent>
 			<xs:extension base="AuditType">
 				<xs:sequence>
+					<xs:element name="id" type="xs:string" minOccurs="0"/>
+					<xs:element name="accountId" type="xs:string" minOccurs="0"/>
 					<xs:element name="name" type="xs:string" minOccurs="1"/>
 					<xs:element name="address" type="AddressInfoType" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
-				<xs:attribute name="id" type="xs:string" use="optional"/>
-				<xs:attribute name="accountId" type="xs:string" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -209,13 +216,13 @@ Enumerations
 		<xs:complexContent>
 			<xs:extension base="AuditType">
 				<xs:sequence>
+					<xs:element name="id" type="xs:string" minOccurs="0"/>
+					<xs:element name="accountId" type="xs:string" minOccurs="0"/>
+					<xs:element name="driverId" type="xs:string" minOccurs="0"/>
 					<xs:element name="pickupOn" type="xs:dateTime" minOccurs="1"/>
 					<xs:element name="pickupPlace" type="PlaceType" minOccurs="1" maxOccurs="1"/>
 					<xs:element name="dropoffPlace" type="PlaceType" minOccurs="1" maxOccurs="1"/>
 				</xs:sequence>
-				<xs:attribute name="id" type="xs:string" use="optional"/>
-				<xs:attribute name="accountId" type="xs:string" use="required"/>
-				<xs:attribute name="driverId" type="xs:string" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -224,22 +231,23 @@ Enumerations
 		<xs:complexContent>
 			<xs:extension base="AuditType">
 				<xs:sequence>
+					<xs:element name="id" type="xs:string" minOccurs="0"/>
+					<xs:element name="accountId" type="xs:string" minOccurs="0"/>
+					<xs:element name="dateAsString" type="xs:string" minOccurs="0"/>
+					<xs:element name="extTripId" type="xs:string" minOccurs="0"/>
+					
 					<xs:element name="appointmentOn" type="xs:dateTime" minOccurs="1"/>
 					<xs:element name="pickupOn" type="xs:dateTime" minOccurs="0"/>
 					<xs:element name="additionalRiders" type="xs:int" minOccurs="0"/>
 					<xs:element name="mileage" type="xs:double" minOccurs="0"/>
 					<xs:element name="price" type="xs:double" minOccurs="0"/>
-					<xs:element name="vehicleType" type="VehicleTypeEnum" minOccurs="0"/>
+					<xs:element name="vehicleType" type="xs:string" minOccurs="0"/>
 					<xs:element name="specRequirements" type="xs:string" minOccurs="0"/>
 					<xs:element name="notes" type="xs:string" minOccurs="0"/>
 					
 					<xs:element name="pickupAddress" type="AddressInfoType" minOccurs="1"/>
 					<xs:element name="dropOffAddress" type="AddressInfoType" minOccurs="1"/>
 				</xs:sequence>
-				<xs:attribute name="id" type="xs:string" use="optional"/>
-				<xs:attribute name="accountId" type="xs:string" use="required"/>
-				<xs:attribute name="dateAsString" type="xs:string" use="required"/>
-				<xs:attribute name="extTripId" type="xs:string" use="optional"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

@@ -65,6 +65,6 @@
     		<groupId>com.google.code.geocoder-java</groupId>
     		<artifactId>geocoder-java</artifactId>
     		<version>${google-geocoder-java}</version>
-  		</dependency>
+		</dependency>
 	</dependencies>
 </project>

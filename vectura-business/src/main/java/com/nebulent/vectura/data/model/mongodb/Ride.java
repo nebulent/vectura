@@ -31,8 +31,8 @@ public class Ride extends BaseEntity {
 	private Date apptOn;
 	private Date pickupOn;
 	private int addnlRdrs;
-	private double mileage;
-	private double price;
+	private Double mileage;
+	private Double price;
 	private String vehicleType;
 	private String specReq;
 	private String notes;
@@ -127,25 +127,25 @@ public class Ride extends BaseEntity {
 	/**
 	 * @return the mileage
 	 */
-	public double getMileage() {
+	public Double getMileage() {
 		return mileage;
 	}
 	/**
 	 * @param mileage the mileage to set
 	 */
-	public void setMileage(double mileage) {
+	public void setMileage(Double mileage) {
 		this.mileage = mileage;
 	}
 	/**
 	 * @return the price
 	 */
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 	/**
 	 * @param price the price to set
 	 */
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 	/**

@@ -35,6 +35,10 @@ public class MapServiceImpl implements MapService {
 	 */
 	@Override
 	public AddressInfo getLocationByAddress(String fullAddress) {
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+		}
 		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(fullAddress).setLanguage("en").getGeocoderRequest();
 		GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
 		List<GeocoderResult> results = geocoderResponse.getResults();
@@ -46,6 +50,7 @@ public class MapServiceImpl implements MapService {
 			//	logger.warn("Partial match:" + result);
 			//}
 		}
+		logger.error("Failed to find address:" + fullAddress + " because " + geocoderResponse.getStatus());
 		return null;
 	}
 

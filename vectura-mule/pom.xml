@@ -150,7 +150,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<!--
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -159,7 +158,6 @@
 				</excludes>
 			</resource>
 		</resources>
-		-->
 		<plugins>
 			<!-- MULE PLUGINS -->
 			<plugin>

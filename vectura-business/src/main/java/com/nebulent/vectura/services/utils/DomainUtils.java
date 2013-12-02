@@ -4,8 +4,6 @@
 package com.nebulent.vectura.services.utils;
 
 import java.math.BigDecimal;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,7 +12,6 @@ import java.util.List;
 import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.Run;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 
 import com.google.code.geocoder.model.GeocoderAddressComponent;
@@ -38,16 +35,18 @@ public final class DomainUtils {
 	 * @param value
 	 * @return
 	 */
-	public static String getDigest(String value){
-		if(StringUtils.isBlank(value)) return null;
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			messageDigest.update(value.getBytes());
-			return new String(new Base64().encode(messageDigest.digest()));
-		} catch (NoSuchAlgorithmException e) {
-			return String.valueOf(value.hashCode());
-		}
-	}
+//	public static String getDigest(String value){
+//		if(StringUtils.isBlank(value)) return null;
+//		
+//		return new String(new Base64().encode(LZ4Factory.safeInstance().highCompressor().compress(value.getBytes())));
+//		/*try {
+//			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+//			messageDigest.update(value.getBytes());
+//			return new String(new Base64().encode(messageDigest.digest()));
+//		} catch (NoSuchAlgorithmException e) {
+//			return String.valueOf(value.hashCode());
+//		}*/
+//	}
 	
 	/**
 	 * @param accountType
@@ -501,7 +500,7 @@ public final class DomainUtils {
 				postal_code = component.getLongName();
 			}
 			else if(StringUtils.isBlank(country) && "country".equalsIgnoreCase(addressType)){
-				country = component.getLongName();
+				country = component.getShortName();
 			}
 			else if(StringUtils.isBlank(premise) && "premise".equalsIgnoreCase(addressType)){
 				premise = component.getLongName();

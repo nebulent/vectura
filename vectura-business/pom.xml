@@ -13,6 +13,7 @@
 	<name>Nebulent :: Vectura Project :: Business</name>
 	<properties>
 		<google-geocoder-java>0.15</google-geocoder-java>
+		<lz4.version>1.2.0</lz4.version>
 	</properties>
 	
 	<!-- Project Dependencies -->
@@ -66,5 +67,15 @@
     		<artifactId>geocoder-java</artifactId>
     		<version>${google-geocoder-java}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--dependency>
+			<groupId>net.jpountz.lz4</groupId>
+			<artifactId>lz4</artifactId>
+			<version>${lz4.version}</version>
+		</dependency-->
 	</dependencies>
 </project>

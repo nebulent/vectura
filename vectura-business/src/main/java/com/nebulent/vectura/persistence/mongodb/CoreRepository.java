@@ -100,6 +100,13 @@ public interface CoreRepository {
 	public void addAccountAddress(String accountId, AddressInfo address);
 
 	/**
+	 * @param accountUuid
+	 * @param addressHash
+	 * @return
+	 */
+	public Place findPlaceByAccountUuidAndAddressHash(String accountUuid, int addressHash);
+
+	/**
 	 * @author Max Fedorov
 	 *
 	 */

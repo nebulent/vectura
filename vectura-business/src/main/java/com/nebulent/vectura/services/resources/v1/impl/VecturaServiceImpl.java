@@ -4,6 +4,7 @@
 package com.nebulent.vectura.services.resources.v1.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -20,8 +21,12 @@ import nebulent.schema.software.vectura._1.Ride;
 import nebulent.schema.software.vectura._1.Run;
 import nebulent.schema.software.vectura._1.User;
 import nebulent.schema.software.vectura._1.Vehicle;
+import net.sourceforge.jgeocoder.AddressComponent;
+import net.sourceforge.jgeocoder.us.AddressParser;
+import net.sourceforge.jgeocoder.us.AddressStandardizer;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -217,10 +222,13 @@ public class VecturaServiceImpl implements AccountResource, RunResource, PlaceRe
 		com.nebulent.vectura.data.model.mongodb.Place location = DomainUtils.toLocation(placeType);
 		location.setAccountUuid(accountId);
 		
-		String addressHash = DomainUtils.getDigest(location.getAddress().toString());
-		if(StringUtils.isNotBlank(addressHash)){
+		Map<AddressComponent, String> parsedAddr  = AddressParser.parseAddress(location.getAddress().toSingleLine());
+		String normalizedAddress = AddressStandardizer.toSingleLine(parsedAddr);
+		int addressHash = new HashCodeBuilder().append(normalizedAddress).toHashCode();
+		
+		if(addressHash != 0){
 			System.out.println("Trying to find by address hash:" + addressHash + " and " + location.getAddress().toString());
-			com.nebulent.vectura.data.model.mongodb.Place placeByHash = getMongoRepository().getPlaceRepository().findByAccountUuidAndAddressHash(accountId, addressHash);
+			com.nebulent.vectura.data.model.mongodb.Place placeByHash = getMongoRepository().findPlaceByAccountUuidAndAddressHash(accountId, addressHash);
 			if(placeByHash == null){
 				AddressInfo addressType = mapService.getLocationByAddress(location.getAddress().toString());
 				if(addressType != null){
@@ -230,7 +238,7 @@ public class VecturaServiceImpl implements AccountResource, RunResource, PlaceRe
 					}
 					if(addressInfo != null && StringUtils.isNotBlank(addressInfo.getAddressLine1())){
 						location.setAddress(addressInfo);
-						location.getAddress().hash();
+						location.getAddress().setHash(addressHash);
 						location.setLocation(location.getAddress().getLocation());
 						location = getMongoRepository().getPlaceRepository().save(location);
 					}

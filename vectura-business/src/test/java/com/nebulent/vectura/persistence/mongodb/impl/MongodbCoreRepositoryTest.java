@@ -5,6 +5,11 @@ package com.nebulent.vectura.persistence.mongodb.impl;
 
 
 import java.util.Calendar;
+import java.util.Map;
+
+import net.sourceforge.jgeocoder.AddressComponent;
+import net.sourceforge.jgeocoder.us.AddressParser;
+import net.sourceforge.jgeocoder.us.AddressStandardizer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,4 +67,29 @@ public class MongodbCoreRepositoryTest {
         Assert.notNull(account);
         System.out.println(account.getApiKey());
     }
+    
+    @Test
+    public void testFindPlaceByIdAndAddressHash(){
+        Place place = mongoRepository.getPlaceRepository().findByAccountUuidAndAddressHash("529b5b4847287c917da14c88", 1207257687);
+        Assert.notNull(place);
+        System.out.println(place.getAddress().toString());
+    }
+    
+    @Test
+    public void getDigest(){
+		com.nebulent.vectura.data.model.mongodb.core.AddressInfo hospital2 = new com.nebulent.vectura.data.model.mongodb.core.AddressInfo();
+		hospital2.setName("Holy Redeemer Hospital");
+		hospital2.setAddressLine1("1648 Huntingdon Pike");
+		hospital2.setCity("Jenkintown");
+		hospital2.setStateOrProvince("PA");
+		hospital2.setZipCode("19046");
+		hospital2.setCountryCode("US");
+		hospital2.setHash(hospital2.hashCode());
+		
+		System.out.println("Our:" + hospital2.toSingleLine());
+		Map<AddressComponent, String> parsedAddr  = AddressParser.parseAddress(hospital2.toSingleLine());
+		//Map<AddressComponent, String> normalizedAddr  = AddressStandardizer.normalizeParsedAddress(parsedAddr); 
+	    String normalized = AddressStandardizer.toSingleLine(parsedAddr);
+		System.out.println("Generated:" + normalized);
+	}
 }

@@ -173,4 +173,13 @@ public class MongodbCoreRepository extends BaseMongodbRepository implements Core
 		GeoResults<Place> results = mongoTemplate.geoNear(nearQuery, Place.class);
 		return results;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.nebulent.vectura.persistence.mongodb.CoreRepository#findPlaceByAccountUuidAndAddressHash(java.lang.String, int)
+	 */
+	@Override
+	public Place findPlaceByAccountUuidAndAddressHash(String accountUuid, int addressHash) {
+		Query query = Query.query(Criteria.where(FIELD_ACCOUNT_UUID).is(accountUuid).and("address.hash").is(addressHash));
+		return mongoTemplate.findOne(query, Place.class);
+	}
 }

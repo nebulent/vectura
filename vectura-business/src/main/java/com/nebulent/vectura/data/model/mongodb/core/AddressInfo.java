@@ -6,11 +6,10 @@ package com.nebulent.vectura.data.model.mongodb.core;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.nebulent.vectura.services.utils.DomainUtils;
 
 /**
  * @author mfedorov
@@ -34,7 +33,7 @@ public class AddressInfo implements Serializable {
 	private String countryCode = "US";
 	private String name;
 	@Indexed(unique=true)
-	private String hash;
+	private int hash;
 	
 	@Transient
 	private double[] location;
@@ -138,13 +137,13 @@ public class AddressInfo implements Serializable {
 	/**
 	 * @return the hash
 	 */
-	public String getHash() {
+	public int getHash() {
 		return hash;
 	}
 	/**
 	 * @param hash the hash to set
 	 */
-	public void setHash(String hash) {
+	public void setHash(int hash) {
 		this.hash = hash;
 	}
 	/**
@@ -172,11 +171,14 @@ public class AddressInfo implements Serializable {
 		this.name = name;
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
 	 */
-	public void hash(){
-		hash = DomainUtils.getDigest(toString());
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+        .append(toString())
+        .toHashCode();
 	}
 	
 	/* (non-Javadoc)
@@ -202,4 +204,22 @@ public class AddressInfo implements Serializable {
 		return builder.toString();
 	}
 	
+	public String toSingleLine() {
+		StringBuilder builder = new StringBuilder(256);
+		builder.append(getAddressLine1().toUpperCase().trim());
+		if(StringUtils.isNotBlank(getAddressLine2())){
+			builder.append(",").append(getAddressLine2().toUpperCase().trim());
+		}
+		if(StringUtils.isNotBlank(getAddressLine3())){
+			builder.append(",").append(getAddressLine3().toUpperCase().trim());
+		}
+		if(StringUtils.isNotBlank(getCity())){
+			builder.append(",").append(getCity().toUpperCase().trim());
+		}
+		builder.append(",").append(getStateOrProvince().toUpperCase().trim())
+		.append(" ").append(getZipCode().trim());
+		//.append(" ").append(getCountryCode().toUpperCase().trim());
+		
+		return builder.toString();
+	}
 }

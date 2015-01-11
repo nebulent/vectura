@@ -32,7 +32,7 @@ public class AddressInfo implements Serializable {
 	private String zipCode;
 	private String countryCode = "US";
 	private String name;
-	@Indexed(unique=true)
+	@Indexed
 	private int hash;
 	
 	@Transient

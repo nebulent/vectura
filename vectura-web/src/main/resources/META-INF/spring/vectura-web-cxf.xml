@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+       ">
+
+    <!-- ========================= Rest Services ========================= -->
+    <jaxrs:server id="rest" address="/api/v1" staticSubresourceResolution="true">
+        <jaxrs:serviceBeans>
+            <ref bean="securityService" />
+            <ref bean="vecturaService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <bean class="com.nebulent.vectura.web.exception.ExceptionMapper" />
+            <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+        </jaxrs:providers>
+        <jaxrs:features>
+            <cxf:logging/>
+        </jaxrs:features>
+    </jaxrs:server>
+
+	<jaxrs:server id="restAdmin" address="/api/v1/admin" staticSubresourceResolution="true">
+        <jaxrs:serviceBeans>
+            <ref bean="adminService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+		</jaxrs:providers>
+        <jaxrs:inInterceptors>
+          	<ref bean="basicAuthSecurityInterceptor"/>
+      	</jaxrs:inInterceptors>
+        <jaxrs:features>
+            <cxf:logging/>
+        </jaxrs:features>
+    </jaxrs:server>
+    
+</beans>

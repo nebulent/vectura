@@ -32,16 +32,16 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.nebulent.vectura.services.resources.v1.AccountResource;
 import com.nebulent.vectura.services.resources.v1.AdminResource;
 
@@ -51,8 +51,8 @@ import com.nebulent.vectura.services.resources.v1.AdminResource;
  */
 public class VecturaServiceImplTest{
 
-	String v1Address = "http://localhost:9090/api";
-	String v1AdminAddress = "http://localhost:9090/api/admin";
+	String v1Address = "http://localhost:8080/api/v1";
+	String v1AdminAddress = "http://localhost:8080/api/v1/admin";
     String username = "someCrazyUzerNm";
     String password = "Theoisd89sufdkkted23";
     

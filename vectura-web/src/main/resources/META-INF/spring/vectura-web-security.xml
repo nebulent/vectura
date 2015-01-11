@@ -1,0 +1,41 @@
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.2.xsd
+                    ">
+
+	<sec:http use-expressions="true"
+		create-session="stateless"
+		entry-point-ref="vecturaAuthenticationEntryPoint" >
+		<sec:intercept-url pattern="/services/**" access="isAuthenticated()" />
+		<sec:custom-filter ref="vecturaSecurityFilter" position="PRE_AUTH_FILTER" />
+	</sec:http>
+
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider ref="vecturaAuthenticationProvider" />
+	</sec:authentication-manager>
+
+	<bean id="vecturaSecurityFilter"
+		class="com.nebulent.vectura.web.security.VecturaSecurityFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
+
+	<bean id="vecturaAuthenticationProvider" 
+		class="com.nebulent.vectura.web.security.VecturaAuthenticationProvider" >
+	</bean>
+
+	<bean id="vecturaAuthenticationEntryPoint"
+		class="com.nebulent.vectura.web.security.VecturaAuthenticationEntryPoint" />
+		
+	<bean id="basicAuthSecurityInterceptor" class="com.nebulent.vectura.web.security.cxf.AuthenticatorInterceptor">
+		<property name="users">
+  			<map>
+				<entry key="${http.basicauth.user}" value="${http.basicauth.password}"/>
+  			</map>
+		</property>
+	</bean>
+</beans>

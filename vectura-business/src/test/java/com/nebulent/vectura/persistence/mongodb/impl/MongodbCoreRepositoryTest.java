@@ -14,8 +14,8 @@ import net.sourceforge.jgeocoder.us.AddressStandardizer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.geo.GeoResult;
-import org.springframework.data.mongodb.core.geo.GeoResults;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
@@ -55,7 +55,8 @@ public class MongodbCoreRepositoryTest {
 	
 	@Test
 	public void testGetLocationsByDistance(){
-		GeoResults<Place> results = mongoRepository.getLocationsByDistance("526a9a88472874c5685cfd1e", new double[]{-75.0555768, 40.2160837});
+		GeoResults<Place> results = mongoRepository.getLocationsByDistance("54b08475e4b02b889c1efcc8", new double[]{-75.0555768, 40.2160837});
+		System.out.println(results.getContent().size());
 		for (GeoResult<Place> geoResult : results) {
 			System.out.println(geoResult.getDistance().getValue() + "-->" + geoResult.getContent().getAddress().toString());
 		}

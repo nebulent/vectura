@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	   xmlns:util="http://www.springframework.org/schema/util" 
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	
+	<!-- ********************************************** MONGO-PERSISTANCE *********************************************************** -->
+
+	<mongo:mongo id="mongo" host="${mongodb.database.host}" port="${mongodb.database.port}">
+		<mongo:options connections-per-host="${mongodb.database.connections-per-host}"
+                   threads-allowed-to-block-for-connection-multiplier="${mongodb.database.threads-allowed-to-block-for-connection-multiplier}"
+                   connect-timeout="${mongodb.database.connect-timeout}"
+                   max-wait-time="${mongodb.database.max-wait-time}"
+                   auto-connect-retry="${mongodb.database.auto-connect-retry}"
+                   socket-keep-alive="${mongodb.database.socket-keep-alive}"
+                   socket-timeout="${mongodb.database.socket-timeout}"
+                   slave-ok="${mongodb.database.slave-ok}"
+                   write-number="${mongodb.database.write-number}"
+                   write-timeout="${mongodb.database.write-timeout}"
+                   write-fsync="${mongodb.database.write-fsync}"/>
+	</mongo:mongo>
+    
+	<bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+    	<constructor-arg value="${mongodb.database.username}" index="0"/>
+    	<constructor-arg value="${mongodb.database.password}" index="1"/>
+  	</bean>
+    
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    	<constructor-arg ref="mongo" index="0"/>
+    	<constructor-arg value="${mongodb.database.name}" index="1"/>
+    	<!--
+    	<constructor-arg ref="userCredentials" index="2"/>
+    	<property name="writeConcern">
+            <util:constant static-field="com.mongodb.WriteConcern.SAFE" ></util:constant>
+        </property>
+        -->
+  	</bean>
+  	
+	<bean class="org.springframework.data.mongodb.core.MongoExceptionTranslator"/>
+	
+	<!-- Spring data repositories. -->
+	<mongo:repositories base-package="com.nebulent.vectura.persistence.mongodb.repositories" />
+	
+	<!-- MongoDB repository -->
+	<bean id="mongoRepository" class="com.nebulent.vectura.persistence.mongodb.impl.MongodbCoreRepository" init-method="init" autowire="byType"/>
+	
+</beans>

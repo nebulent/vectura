@@ -16,7 +16,8 @@
 	<modules>
 		<module>vectura-api</module>
 		<module>vectura-business</module>
-		<module>vectura-mule</module>
+		<!--module>vectura-mule</module-->
+		<module>vectura-web</module>
 	</modules>
 	<name>Nebulent :: Vectura Project</name>
 	<url>https://github.com/nebulent/vectura</url>
@@ -43,24 +44,26 @@
 		<eclipsePluginVersion>2.8</eclipsePluginVersion>
 		<jdkName>JavaSE-1.6</jdkName>
 		
-		<!-- General Libraries. -->
+		<!--ESB-->
 		<mule.version>3.4.0</mule.version>
-		<cxf.version>2.5.1</cxf.version>
-		<spring.version>3.2.1.RELEASE</spring.version>
-		<spring.ampq.version>1.2.0.RELEASE</spring.ampq.version>
-		<spring.security.version>3.1.0.RELEASE</spring.security.version>
 		<com.sun.jersey.version>1.8</com.sun.jersey.version>
+
+		<!-- General Libraries. -->
+		<cxf.version>2.6.1</cxf.version>
+		<spring.version>4.0.6.RELEASE</spring.version>
+		<spring.ampq.version>1.2.0.RELEASE</spring.ampq.version>
+		<spring.security.version>3.2.5.RELEASE</spring.security.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 		<mysql-version>5.1.22</mysql-version>
-		<jackson.version>1.9.11</jackson.version>
+		<jackson.version>2.4.3</jackson.version>
 		
 		<!-- MongoDB and Spring Data. -->
-		<spring.data.mongodb.version>1.3.2.RELEASE</spring.data.mongodb.version>
+		<spring.data.mongodb.version>1.6.1.RELEASE</spring.data.mongodb.version>
 		<spring.data.jpa.version>1.4.2.RELEASE</spring.data.jpa.version>
-		<mongo.java.driver.version>2.9.3</mongo.java.driver.version>
-		<jdk.version>1.6</jdk.version>
+		<mongo.java.driver.version>2.12.3</mongo.java.driver.version>
+		<jdk.version>1.7</jdk.version>
 		<junit.version>4.9</junit.version>
-		<slf4j.version>1.6.1</slf4j.version>
+		<slf4j.version>1.7.5</slf4j.version>
 	</properties>
 	<dependencies>
 		<!-- All for testing. -->

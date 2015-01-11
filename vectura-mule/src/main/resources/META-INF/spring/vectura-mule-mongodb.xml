@@ -43,10 +43,10 @@
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
     	<constructor-arg ref="mongo" index="0"/>
     	<constructor-arg value="${mongodb.database.name}" index="1"/>
-    	<constructor-arg ref="userCredentials" index="2"/>
+    	<!--constructor-arg ref="userCredentials" index="2"/>
     	<property name="writeConcern">
             <util:constant static-field="com.mongodb.WriteConcern.SAFE" ></util:constant>
-        </property>
+        </property-->
   	</bean>
   	
 	<bean class="org.springframework.data.mongodb.core.MongoExceptionTranslator"/>

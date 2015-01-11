@@ -5,11 +5,11 @@ package com.nebulent.vectura.services.impl;
 
 import java.util.List;
 
+import nebulent.schema.software.vectura._1.AddressInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import nebulent.schema.software.vectura._1.AddressInfo;
 
 import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;

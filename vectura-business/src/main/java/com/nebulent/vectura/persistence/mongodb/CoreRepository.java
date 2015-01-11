@@ -6,7 +6,7 @@ package com.nebulent.vectura.persistence.mongodb;
 import java.io.Serializable;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.geo.GeoResults;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.data.mongodb.core.query.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;

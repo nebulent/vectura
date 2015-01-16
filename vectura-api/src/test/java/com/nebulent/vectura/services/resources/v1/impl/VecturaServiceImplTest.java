@@ -6,6 +6,7 @@ package com.nebulent.vectura.services.resources.v1.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -51,8 +52,13 @@ import com.nebulent.vectura.services.resources.v1.AdminResource;
  */
 public class VecturaServiceImplTest{
 
-	String v1Address = "http://localhost:8080/api/v1";
-	String v1AdminAddress = "http://localhost:8080/api/v1/admin";
+	//String v1Address = "http://tomcat.nebulent.com:8080/vectura-web/api/v1";
+	//String v1AdminAddress = "http://tomcat.nebulent.com:8080/vectura-web/api/v1/admin";
+	
+	// Jetty path.
+	String v1Address = "http://localhost:8080/api/api/v1";
+	String v1AdminAddress = "http://localhost:8080/api/api/admin";
+	
     String username = "someCrazyUzerNm";
     String password = "Theoisd89sufdkkted23";
     
@@ -320,7 +326,7 @@ public class VecturaServiceImplTest{
 	@Test
 	public void testFindAccountById(){
 		AccountResource accountResource = instantiateClient(v1Address, AccountResource.class, getHeaders());
-		Account account = accountResource.findAccount("526a9a88472874c5685cfd1e");//headers.get("Vectura-ApiKey"));
+		Account account = accountResource.findAccount("54b978a9d4c61b0dbdeeed96");//headers.get("Vectura-ApiKey"));
 		if(account != null){
 			try {
 				logger.debug("Go email account:" + jacksonJsonMapper.writeValueAsString(account));
@@ -571,8 +577,9 @@ public class VecturaServiceImplTest{
         
         //Adding JSON converter
 		JacksonJsonProvider jacksonJsonProvider = new JacksonJsonProvider();
-		//jacksonJsonProvider.enable(JsonParser.Feature.ALLOW_COMMENTS, true);
-        bean.setProvider(jacksonJsonProvider);
+		jacksonJsonProvider.enable(JsonParser.Feature.ALLOW_COMMENTS, true);
+		
+        bean.setProviders(Arrays.asList(jacksonJsonProvider));
         
         //Adding logging(not necessary)
         List<AbstractFeature> features = new ArrayList<AbstractFeature>();

@@ -55,7 +55,7 @@ public class MongodbCoreRepositoryTest {
 	
 	@Test
 	public void testGetLocationsByDistance(){
-		GeoResults<Place> results = mongoRepository.getLocationsByDistance("54b08475e4b02b889c1efcc8", new double[]{-75.0555768, 40.2160837});
+		GeoResults<Place> results = mongoRepository.getLocationsByDistance("54b97adbd4c6db3244607616", new double[]{-75.0555768, 40.2160837});
 		System.out.println(results.getContent().size());
 		for (GeoResult<Place> geoResult : results) {
 			System.out.println(geoResult.getDistance().getValue() + "-->" + geoResult.getContent().getAddress().toString());

@@ -19,6 +19,6 @@
 	
 	<bean id="authenticationService" class="com.nebulent.vectura.services.impl.AuthenticationServiceImpl" autowire="byType" />
 
-    <bean id="securityService" class="com.nebulent.vectura.web.service.rest.SecurityService"/>
+    <!--bean id="securityService" class="com.nebulent.vectura.web.service.rest.SecurityService"/-->
 
 </beans>

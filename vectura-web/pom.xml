@@ -74,6 +74,34 @@
 			<version>${spring.security.version}</version>
 		</dependency>
 
+		<!-- Apache Camel -->
+		<dependency>
+        	<groupId>org.apache.camel</groupId>
+        	<artifactId>camel-core</artifactId>
+        	<version>${camel.version}</version>
+        </dependency>
+        <dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<!-- Used for JSON serialization. -->
+		<dependency>
+		  	<groupId>org.apache.camel</groupId>
+		  	<artifactId>camel-jackson</artifactId>
+		  	<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+		   	<groupId>org.apache.camel</groupId>
+		   	<artifactId>camel-cxf</artifactId>
+		   	<version>${camel.version}</version>
+		</dependency>
+        <dependency>
+        	<groupId>org.apache.camel</groupId>
+        	<artifactId>camel-ognl</artifactId>
+        	<version>${camel.version}</version>
+        </dependency>
+
 		<!-- Cxf -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -93,18 +121,20 @@
 			<version>${cxf.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>${jackson.version}</version>
+		<!-- Test. -->
+        <dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
+			<version>${cxf.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.geronimo.specs</groupId>
+					<artifactId>geronimo-servlet_2.5_spec</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>

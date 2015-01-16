@@ -25,11 +25,11 @@
 	</bean>
 
 	<bean id="vecturaAuthenticationProvider" 
-		class="com.nebulent.vectura.web.security.VecturaAuthenticationProvider" >
+		class="com.nebulent.vectura.web.security.VecturaAuthenticationProvider" autowire="byType">
 	</bean>
 
 	<bean id="vecturaAuthenticationEntryPoint"
-		class="com.nebulent.vectura.web.security.VecturaAuthenticationEntryPoint" />
+		class="com.nebulent.vectura.web.security.VecturaAuthenticationEntryPoint" autowire="byType"/>
 		
 	<bean id="basicAuthSecurityInterceptor" class="com.nebulent.vectura.web.security.cxf.AuthenticatorInterceptor">
 		<property name="users">

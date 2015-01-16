@@ -9,6 +9,10 @@
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
             ">
 	
+	<!--
+	<context:component-scan base-package="com.nebulent.vectura.web" />
+	-->
+	
 	<!-- ========================= Expose The Properties ========================= -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
@@ -17,13 +21,15 @@
 			</util:list>
 		</property>
 	</bean>
-
-	<context:component-scan base-package="com.nebulent.vectura.web" />
-
 	
+	<!-- ========================= Apache CXF Resources ========================= -->
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    
 	<import resource="classpath:/META-INF/spring/vectura-web-services.xml" />
 	<import resource="classpath:/META-INF/spring/vectura-web-mongodb.xml" />
 	<import resource="classpath:/META-INF/spring/vectura-web-cxf.xml" />
 	<import resource="classpath:/META-INF/spring/vectura-web-security.xml" />
-
+	<import resource="classpath:/META-INF/spring/vectura-web-camel.xml" />
+	
 </beans>
